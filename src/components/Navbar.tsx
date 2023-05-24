@@ -1,8 +1,6 @@
-import { useNavigate } from 'react-router-dom'
 import Dropdown from './dropdowns/Dropdown'
 
 const Navbar = () => {
-    const navigate = useNavigate()
 
     const logoutHandler = () => {
         // dispatch(addStaff({ position: "" }))

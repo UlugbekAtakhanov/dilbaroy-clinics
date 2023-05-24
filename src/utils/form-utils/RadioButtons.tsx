@@ -1,5 +1,5 @@
 import { ErrorMessage, Field } from 'formik'
-import { LabelNameProps, OptionsProps } from '../../types/formikTypes'
+import { LabelNameProps } from '../../types/formikTypes'
 
 
 export interface FieldProps {
@@ -10,6 +10,14 @@ export interface FieldProps {
         onChange: () => void
     }
 }
+
+interface OptionsProps {
+    options?: {
+        key: string,
+        value: string,
+    }[]
+}
+
 
 const RadioButtons = ({ label, name, options, ...rest }: OptionsProps & LabelNameProps) => {
 
