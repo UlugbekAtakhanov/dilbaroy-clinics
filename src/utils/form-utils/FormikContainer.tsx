@@ -105,13 +105,13 @@ const FormikContainer = () => {
                             <FormControl control="textarea" label="textarea" name="textarea" />
 
                             {/* select */}
-                            <FormControl control="select" label="select" name="select" options={selectOptions} />
+                            {/* <FormControl control="select" label="select" name="select" options={selectOptions} /> */}
 
                             {/* radio */}
-                            <FormControl control="radio" label="radio" name="radio" options={radioOptions} />
+                            {/* <FormControl control="radio" label="radio" name="radio" options={radioOptions} /> */}
 
                             {/* checkbox */}
-                            <FormControl control="checkbox" label="checkbox" name="checkbox" options={checkboxOptions} />
+                            {/* <FormControl control="checkbox" label="checkbox" name="checkbox" options={checkboxOptions} /> */}
 
                             {/* datepicker */}
                             <FormControl control="datepicker" label="datepicker" name="datepicker" />

@@ -7,9 +7,7 @@ export const useServicesGetData = () => {
     return useQuery(["services"], () => fetchData.get(serviceUrl), {
 
         // onSuccess
-        onSuccess: ({ data }) => {
-            
-        },
+        onSuccess: () => { },
 
         // onError
         onError: (error) => {

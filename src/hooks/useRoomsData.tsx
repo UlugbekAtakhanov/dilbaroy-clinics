@@ -7,9 +7,7 @@ export const useRoomsGetData = () => {
     return useQuery(["rooms"], () => fetchData.get(roomsUrl), {
 
         // onSuccess
-        onSuccess: ({ data }) => {
-            // console.log(data)
-        },
+        onSuccess: () => { },
 
         // onError
         onError: (error) => {

@@ -6,9 +6,7 @@ const doctorUrl = "/api/doctor/"
 export const useDoctorsGetData = () => {
     return useQuery(["doctors"], () => fetchData.get(doctorUrl), {
         // onSuccess
-        onSuccess: ({ data }) => {
-            // console.log(data)
-        },
+        onSuccess: () => { },
 
         // onError
         onError: (error) => {
