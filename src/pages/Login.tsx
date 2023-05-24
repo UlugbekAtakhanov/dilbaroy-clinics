@@ -2,6 +2,7 @@ import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
 import { LoginFormValuesProps } from '../types/formikTypes'
 import FormControl from '../utils/form-utils/FormControl'
 import { useTokenGetData } from '../hooks/useTokenData'
+import { useNavigate } from 'react-router-dom'
 
 // form validation
 const validate = (values: LoginFormValuesProps) => {
@@ -23,6 +24,7 @@ const validate = (values: LoginFormValuesProps) => {
 
 
 const Login = () => {
+	const navigate = useNavigate()
 	const { mutate } = useTokenGetData()
 
 	// form initialValues
@@ -34,6 +36,7 @@ const Login = () => {
 	// form onSubmit
 	const onSubmit = (values: LoginFormValuesProps, onSubmitProps: FormikHelpers<LoginFormValuesProps>) => {
 		mutate(values)
+		navigate("/reception")
 		setTimeout(() => {
 			onSubmitProps.setSubmitting(false)
 			onSubmitProps.resetForm()
