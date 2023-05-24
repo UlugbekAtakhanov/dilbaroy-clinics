@@ -49,24 +49,24 @@ const validate = (values: FormValuesProps) => {
 }
 
 // array options for select element
-const selectOptions = [
-    { key: "Select an option", value: "" },
-    { key: "Option 1", value: "option1" },
-    { key: "Option 2", value: "option2" },
-    { key: "Option 3", value: "option3" }
-]
+// const selectOptions = [
+//     { key: "Select an option", value: "" },
+//     { key: "Option 1", value: "option1" },
+//     { key: "Option 2", value: "option2" },
+//     { key: "Option 3", value: "option3" }
+// ]
 // radio options for radio button
-const radioOptions = [
-    { key: "Option 1", value: "option1" },
-    { key: "Option 2", value: "option2" },
-    { key: "Option 3", value: "option3" }
-]
+// const radioOptions = [
+//     { key: "Option 1", value: "option1" },
+//     { key: "Option 2", value: "option2" },
+//     { key: "Option 3", value: "option3" }
+// ]
 // checkbox options for checkbox button
-const checkboxOptions = [
-    { key: "Option 1", value: "option1" },
-    { key: "Option 2", value: "option2" },
-    { key: "Option 3", value: "option3" }
-]
+// const checkboxOptions = [
+//     { key: "Option 1", value: "option1" },
+//     { key: "Option 2", value: "option2" },
+//     { key: "Option 3", value: "option3" }
+// ]
 
 // initialValues
 const initialValues = {
