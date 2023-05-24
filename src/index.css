@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-black text-[14px] bg-sky-100
+  }
+
+  label {
+    @apply flex flex-col !normal-case
+  }
+
+  input[type],
+  select {
+    @apply rounded text-[14px] border-gray-300 placeholder:opacity-50
+  }
+
+  h2 {
+    @apply text-3xl font-bold
+  }
+
+}
+
+@layer components {
+  .button-green {
+    @apply bg-[#05D3E4] text-white p-2 rounded-md shadow hover:shadow-lg hover:shadow-[#05D3E4] transition-all disabled:bg-[#05D3E4]/50 disabled:shadow-none
+  }
+
+  .button-red {
+    @apply bg-red-700 text-white p-2 rounded-md shadow hover:shadow-lg hover:shadow-red-400 transition-all disabled:bg-red-500/50 disabled:shadow-none
+  }
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: lightgray;
+}
+
+::-webkit-scrollbar-thumbhover {
+  background: indigo;
+}
+
+
+.main-container {
+  max-width: 1200px;
+  margin-inline: auto;
+}
