@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
 import { fetchData } from "../axios/global-instances"
+import { FormValuesProps } from "../pages/reception/Reception"
 
 const patientsUrl = "/api/register/"
 // const singlePatientUrl = "/api/bemor/"
@@ -77,7 +78,7 @@ const patientsUrl = "/api/register/"
 // create a patient
 export const usePatientsCreateData = () => {
     // const queryClient = useQueryClient()
-    return useMutation((data) => fetchData.post(patientsUrl, data), {
+    return useMutation<any, Error, FormValuesProps>((data) => fetchData.post(patientsUrl, data), {
         // onSuccess
         onSuccess: (data) => {
             console.log(data)

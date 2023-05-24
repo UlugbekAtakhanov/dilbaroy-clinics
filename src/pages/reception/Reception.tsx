@@ -87,7 +87,7 @@ const validate = (values: FormValuesProps) => {
 const Reception = () => {
 
 	// useQuery hooks
-	const { mutate, isLoading: patientsIsLoading } = usePatientsCreateData()
+	const { mutate } = usePatientsCreateData()
 	const { isLoading: servicesIsLoading, data: servicesQuery } = useServicesGetData()
 	const { isLoading: doctorsIsLoading, data: doctorsQuery } = useDoctorsGetData()
 	const { isLoading: roomsIsLoading, data: roomsQuery } = useRoomsGetData()
