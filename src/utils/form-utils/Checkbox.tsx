@@ -27,7 +27,7 @@ const Checkbox = ({ label, name, options, ...rest }: OptionsProps & LabelNamePro
                                 <input type="checkbox" {...field} value={option.value} checked={field.value.includes(option.value.toString())} />
                                 {option.key}
                             </label>
-                            {form.values.aparat.includes(option.value.toString()) && <p className='font-bold'> + {toLocale(option.price)} сўм</p>}
+                            {form.values.services.includes(option.value.toString()) && <p className='font-bold'> + {toLocale(option.price)} сўм</p>}
                         </div>
                     ))
                 }}

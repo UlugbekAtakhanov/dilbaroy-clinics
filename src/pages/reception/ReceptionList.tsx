@@ -1,4 +1,3 @@
-import React from 'react'
 import PatientTable from '../../components/tables/patient-table/PatientTable'
 
 const ReceptionList = () => {

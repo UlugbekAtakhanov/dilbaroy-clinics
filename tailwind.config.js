@@ -7,6 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        cblue: "#05D3E4",
         cred: "#FD3D57",
         black: "#2B2D42",
       }

@@ -1,8 +1,10 @@
+import { useEffect } from "react"
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
 import { LoginFormValuesProps } from '../types/formikTypes'
 import FormControl from '../utils/form-utils/FormControl'
 import { useTokenGetData } from '../hooks/useTokenData'
 import { useNavigate } from 'react-router-dom'
+import { getFromLS } from '../utils/localStorage'
 
 // form validation
 const validate = (values: LoginFormValuesProps) => {
@@ -25,7 +27,14 @@ const validate = (values: LoginFormValuesProps) => {
 
 const Login = () => {
 	const navigate = useNavigate()
-	const { mutate } = useTokenGetData()
+	const { mutate } = useTokenGetData(navigate)
+
+	useEffect(() => {
+		if (getFromLS("token")) {
+			navigate("/reception")
+		}
+	}, [])
+
 
 	// form initialValues
 	const initialValues = {
@@ -36,12 +45,12 @@ const Login = () => {
 	// form onSubmit
 	const onSubmit = (values: LoginFormValuesProps, onSubmitProps: FormikHelpers<LoginFormValuesProps>) => {
 		mutate(values)
-		navigate("/reception")
 		setTimeout(() => {
 			onSubmitProps.setSubmitting(false)
 			onSubmitProps.resetForm()
 		}, 3000);
 	}
+
 
 	// if (tokenIsLoading) return <Spinner /> 
 

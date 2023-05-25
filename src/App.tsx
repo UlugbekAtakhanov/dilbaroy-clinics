@@ -4,6 +4,7 @@ import Login from "./pages/Login"
 import ReceptionLayout from "./layouts/ReceptionLayout"
 import Reception from "./pages/reception/Reception"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import ReceptionList from "./pages/reception/ReceptionList"
 
 const App = () => {
 	return (
@@ -19,11 +20,12 @@ export default App
 export const routes = createRoutesFromElements(
 	<Route path="/" element={<App />} >
 
-		<Route index element={<PrivateRoute><Login /></PrivateRoute>} />
-		<Route path="/login" element={<PrivateRoute><Login /></PrivateRoute>} />
+		<Route index element={<Login />} />
+		<Route path="/login" element={<Login />} />
 
 		<Route path="/reception" element={<PrivateRoute><ReceptionLayout /></PrivateRoute>}>
 			<Route index element={<Reception />} />
+			<Route path="list" element={<ReceptionList />} />
 		</Route>
 
 		{/* <Route path="/labarant" element={<PrivateRoute role="labarant"><LabarantLayout /></PrivateRoute>}>

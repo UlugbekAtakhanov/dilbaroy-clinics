@@ -1,11 +1,12 @@
+import { useNavigate } from 'react-router-dom'
+import { clearLS } from '../utils/localStorage'
 import Dropdown from './dropdowns/Dropdown'
 
 const Navbar = () => {
-
+    const navigate = useNavigate()
     const logoutHandler = () => {
-        // dispatch(addStaff({ position: "" }))
-        // clearLS("token")
-        // navigate("/login")
+        clearLS()
+        navigate("/login")
     }
 
     return (

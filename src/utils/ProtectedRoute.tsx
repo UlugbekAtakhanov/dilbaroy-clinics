@@ -1,15 +1,21 @@
-import { Navigate } from "react-router-dom"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { getFromLS } from "./localStorage"
 
 interface PrivateRouteProps {
     children: JSX.Element
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
-    const user = false
+    const navigate = useNavigate()
+    const token = getFromLS("token")
 
-    if (user) {
-        return <Navigate to={`/login}`} />
-    }
+    useEffect(() => {
+        if (!token) {
+            navigate("/login")
+        }
+    }, [])
+
     return children
 }
 

@@ -4,7 +4,7 @@ import { Field, Form, Formik, FormikErrors, FormikHelpers } from 'formik'
 import Spinner from '../../components/spinner/Spinner'
 import { useDoctorsGetData } from '../../hooks/useDoctorsData'
 import { useRoomsGetData } from '../../hooks/useRoomsData'
-import { useServicesGetData } from '../../hooks/useServicesData'
+import { useFoodGetData, useServicesGetData } from '../../hooks/useServicesData'
 import FormControl from '../../utils/form-utils/FormControl'
 import { toLocale } from "../../utils/toLocale"
 import { usePatientsCreateData } from '../../hooks/usePatientsData'
@@ -20,34 +20,35 @@ export interface FormValuesProps {
 
 	room_number: string,
 	from_date: string,
-	room_duration: number,
+	duration: number,
 
 	food: boolean,
 	food_duration: number,
 	food_amount: number
 
-	aparat: never[],
+	services: never[],
 	total_amount: number
 
 }
 
 // doctors type
-interface DoctorProps {
+export interface DoctorProps {
 	id: number,
 	full_name: string
 }
 
 // rooms type
-interface RoomProps {
+export interface RoomProps {
 	id: number,
 	room_comfortable
 	: string,
 	room_number: string,
 	room_personal: number,
+	room_patients: number,
 	room_price: number,
 	room_type: number
 }
-interface RoomSectionProps {
+export interface RoomSectionProps {
 	id: number,
 	room_type: string,
 	rooms: RoomProps[]
@@ -89,15 +90,20 @@ const Reception = () => {
 	// useQuery hooks
 	const { mutate } = usePatientsCreateData()
 	const { isLoading: servicesIsLoading, data: servicesQuery } = useServicesGetData()
+	const { isLoading: foodIsLoading, data: foodQuery } = useFoodGetData()
 	const { isLoading: doctorsIsLoading, data: doctorsQuery } = useDoctorsGetData()
 	const { isLoading: roomsIsLoading, data: roomsQuery } = useRoomsGetData()
 
 	const roomsList = roomsQuery?.data.map((rooms: RoomSectionProps) => rooms.rooms).flat()
+	const roomsStat = roomsList?.reduce((acc: any, current: RoomProps) => {
+		const count = acc[current.room_comfortable] + 1 || 1
+		return { ...acc, [current.room_comfortable]: count }
+	}, {})
 
 	// select options
 	const doctorsOptions = doctorsQuery?.data.map((doctor: DoctorProps) => ({ key: doctor.full_name, value: doctor.id })) || []
 	const roomsOptions = roomsQuery?.data.map((rooms: RoomSectionProps) => {
-		return rooms?.rooms.map(({ id, room_number, room_personal, room_comfortable }: RoomProps) => ({ key: `${room_number} (${room_personal} ўрин бўш, ${room_comfortable})`, value: id })) || []
+		return rooms?.rooms.map(({ id, room_number, room_personal, room_patients, room_comfortable }: RoomProps) => ({ key: `${room_number} (${room_personal} ўринлик, ${room_patients} ўрин бўш, ${room_comfortable})`, value: id })) || []
 	})
 	const servicesApparatlar = servicesQuery?.data.map((service: ServiceProps) => ({ key: service.service_name, value: service.id, price: service.service_price })) || []
 
@@ -113,36 +119,35 @@ const Reception = () => {
 
 		room_number: "",
 		from_date: "",
-		room_duration: 1,
+		duration: 1,
 
 		food: false,
 		food_duration: 1,
 		food_amount: 0,
 
-		aparat: [],
+		services: [],
 		total_amount: 0
 	}
 
 	// form onSubmit
 	const onSubmit = (values: FormValuesProps, onSubmitProps: FormikHelpers<FormValuesProps>) => {
-		const roomTotal = roomsList.find((room: RoomProps) => room.id.toString() === values.room_number).room_price * values.room_duration
+		const roomTotal = roomsList.find((room: RoomProps) => room.id.toString() === values.room_number).room_price * values.duration
 		const foodTotal = values.food ? values.food_duration * 30000 : 0
-		const aparatTotal = values.aparat.reduce((acc, current) => {
+		const servicesTotal = values.services.reduce((acc, current) => {
 			const el = servicesQuery?.data.find((service: ServiceProps) => service.id.toString() === current)
 			return acc += el.service_price
 		}, 0)
-		const totalAmount = roomTotal + foodTotal + aparatTotal
+		const totalAmount = roomTotal + foodTotal + servicesTotal
 		values = { ...values, total_amount: totalAmount, food_amount: foodTotal }
-		console.log(values)
 		mutate(values)
 		setTimeout(() => {
 			onSubmitProps.setSubmitting(false)
-			// onSubmitProps.resetForm()
+			onSubmitProps.resetForm()
 		}, 3000);
 	}
 
 
-	if (servicesIsLoading || doctorsIsLoading || roomsIsLoading) return <Spinner />
+	if (servicesIsLoading || doctorsIsLoading || roomsIsLoading || foodIsLoading) return <Spinner />
 
 
 	return (
@@ -152,13 +157,13 @@ const Reception = () => {
 			<Formik onSubmit={onSubmit} initialValues={initialValues} validate={validate}>
 				{formik => {
 					const specRoom = roomsList.find((room: RoomProps) => room.id.toString() === formik.values.room_number)
-					const roomTotal = specRoom ? specRoom?.room_price * formik.values.room_duration : 0
-					const foodTotal = formik.values.food ? formik.values.food_duration * 30000 : 0
-					const aparatTotal = formik.values.aparat.reduce((acc, current) => {
+					const roomTotal = specRoom ? specRoom?.room_price * formik.values.duration : 0
+					const foodTotal = formik.values.food ? formik.values.food_duration * foodQuery?.data[0].food_price : 0
+					const servicesTotal = formik.values.services.reduce((acc, current) => {
 						const el = servicesQuery?.data.find((service: ServiceProps) => service.id.toString() === current)
 						return acc += el.service_price
 					}, 0)
-					const totalAmount = roomTotal + foodTotal + aparatTotal
+					const totalAmount = roomTotal + foodTotal + servicesTotal
 
 					return (
 						<Form className="grid gap-6 md:grid-cols-3">
@@ -182,15 +187,15 @@ const Reception = () => {
 										<FormControl control="datepicker" label="Сана" name="from_date" type='datetime-local' />
 
 										<div>
-											<FormControl control="input" label="Кун сони" min={1} name="room_duration" type="number" />
+											<FormControl control="input" label="Кун сони" min={1} name="duration" type="number" />
 											<p className='text-xs'>
 												(кунига  <span className='font-bold'>
-													{specRoom ? (specRoom?.room_price).toLocaleString("uz-Cyrl-UZ") : null}
+													{specRoom ? toLocale(specRoom?.room_price) : null}
 												</span> минг сўм)
 											</p>
 										</div>
 										<p className='underline'>
-											Jami - <span className='font-bold'>{specRoom ? roomTotal : null} so'm</span>
+											Jami - <span className='font-bold'>{specRoom ? toLocale(roomTotal) : null} сўм</span>
 										</p>
 									</div>
 								</div>
@@ -207,19 +212,19 @@ const Reception = () => {
 											<>
 												<div>
 													<FormControl control="input" label="Кун сони" min={1} name="food_duration" type="number" />
-													<p className='text-xs'>(кунига  <span className='font-bold'>30 000</span> минг сўм)</p>
+													<p className='text-xs'>(кунига  <span className='font-bold'>{toLocale(foodQuery?.data[0].food_price)}</span> минг сўм)</p>
 												</div>
-												<p className='underline'>Jami - <span className='font-bold'>{formik.values.food_duration > 0 ? toLocale(formik.values.food_duration * 30000) : 0} сўм</span></p>
+												<p className='underline'>Jami - <span className='font-bold'>{formik.values.food_duration > 0 ? toLocale(formik.values.food_duration * foodQuery?.data[0].food_price) : 0} сўм</span></p>
 											</>
 										) : null}
 									</div>
 								</div>
 
-								{/* Aparat */}
+								{/* Services */}
 								<div className='flex flex-col gap-1'>
 									<span className='font-semibold'>Инструментал текширувлар</span>
 									<div className='border border-gray-300 rounded p-2 grid gap-4'>
-										<FormControl control="checkbox" name="aparat" options={servicesApparatlar} />
+										<FormControl control="checkbox" name="services" options={servicesApparatlar} />
 									</div>
 								</div>
 
@@ -239,6 +244,10 @@ const Reception = () => {
 									)
 								})}
 
+								<div className='text-right'>
+									<p><span className='font-bold'>Lux</span> - {roomsStat.Lux} та хона бўш</p>
+									<p><span className='font-bold'>Oddiy</span> - {roomsStat.Oddiy} та хона бўш</p>
+								</div>
 
 							</div>
 
