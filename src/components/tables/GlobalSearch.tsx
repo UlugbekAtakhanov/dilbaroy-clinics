@@ -1,17 +1,7 @@
 import { format } from 'date-fns'
 import { useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useDoctorsGetData } from '../../hooks/useDoctorsData'
-import { useServicesGetData } from '../../hooks/useServicesData'
-// import DatePicker from '../date-picker/DatePicker'
-// import DoctorsDropdown from '../dropdowns/DoctorsDropdown'
-// import RejimDropdown from '../dropdowns/RejimDropdown'
-// import ServicesDropdown from '../dropdowns/ServicesDropdown'
-import GlobalFilter from './GlobalFilter'
 import DatePicker from '../date-picker/DatePicker'
-import { usePatientsGetData } from '../../hooks/usePatientsData'
-import { UseQueryResult } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
+import GlobalFilter from './GlobalFilter'
 
 interface GlobalSearchProps {
     getPatientsFn: any,
@@ -20,7 +10,7 @@ interface GlobalSearchProps {
 }
 
 const GlobalSearch = ({ getPatientsFn, globalFilter, setGlobalFilter }: GlobalSearchProps) => {
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     // const [searchParams] = useSearchParams()
     // const serviceSearchParamsTerm = searchParams.get("service")
 

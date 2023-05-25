@@ -1,8 +1,11 @@
-import React from 'react'
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"
 
+interface GlobalFilterProps {
+    filter: any,
+    setFilter: any
+}
 
-const GlobalFilter = ({ filter, setFilter }) => {
+const GlobalFilter = ({ filter, setFilter }: GlobalFilterProps) => {
     return (
         <div className='text-[14px] w-full rounded placeholder:text-gray-400 bg-sky-100 pl-2 border border-black flex items-center gap-1'>
             <MagnifyingGlassIcon className='w-4' />
