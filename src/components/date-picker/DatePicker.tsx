@@ -19,6 +19,7 @@ const DatePicker = ({ date, setDate }: DatePickerProps) => {
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
+            // const handleClickOutside = (event: React.MouseEvent) => {
             if (!datePickerRef?.current?.contains(event.target)) {
                 setIsDatePickerOpen(false);
             }

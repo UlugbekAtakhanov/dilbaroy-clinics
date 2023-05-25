@@ -6,8 +6,8 @@ import { format } from "date-fns"
 const patientsUrl = "/api/register/"
 // const singlePatientUrl = "/api/bemor/"
 
-const getPatientsByUrl = "/api/register/"
-// const getPatientsByUrl = "/api/patient_statistics/"
+// const getPatientsByUrl = "/api/register/"
+const getPatientsByUrl = "/api/patient_statistics/"
 
 // const patientsLabUrl = "/api/analysis/"
 // const patientLabAnalysisUrl = "/api/analysis/"
@@ -26,7 +26,7 @@ export const usePatientsGetData = ({ searchTerm }: UsePatientsGetDataProps) => {
     // console.log(searchTerm)
     const config = {
         params: {
-            from: searchTerm?.from || format(new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), "yyyy-MM-dd"),
+            from_date: searchTerm?.from || format(new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), "yyyy-MM-dd"),
             to_date: searchTerm?.to || format(new Date(Date.now()), "yyyy-MM-dd"),
         }
     }
@@ -81,19 +81,30 @@ export const usePatientsGetData = ({ searchTerm }: UsePatientsGetDataProps) => {
     })
 }
 
+
+
+interface UsePatientsCreateDataProps {
+    toast: any
+}
 // create a patient
-export const usePatientsCreateData = () => {
+export const usePatientsCreateData = ({ toast }: UsePatientsCreateDataProps) => {
 
     return useMutation<any, Error, FormValuesProps>((data) => fetchData.post(patientsUrl, data), {
         // onSuccess
-        onSuccess: () => { },
+        onSuccess: () => {
+            toast.success("Added succesfully")
+        },
 
         // onError
         onError: (error) => {
+            toast.error("Hatolik yuz berdi, qaytadan kiriting")
             console.log(error)
         },
     })
 }
+
+
+
 
 // get a single patient
 // export const useSinglePatientGetData = (patientId) => {

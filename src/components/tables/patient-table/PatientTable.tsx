@@ -15,7 +15,7 @@ import Statistics from '../Statistics'
 
 
 const PatientTable = () => {
-    const printTableRef = useRef(null)
+    const printTableRef = useRef<HTMLDivElement>(null)
     const navigate = useNavigate()
 
     // fetching patients list
@@ -141,7 +141,7 @@ function Table({ getTableProps, headerGroups, rows, getTableBodyProps, prepareRo
                 {rows.map(row => {
                     prepareRow(row)
                     return (
-                        <tr onClick={() => goToProfileHandler(row)} className='[&:nth-child(even)]:bg-gray-100 hover:[&:nth-child(even)]:bg-green-200 hover:bg-cblue/20 font-semibold transition-all' {...row.getRowProps()}>
+                        <tr onClick={() => goToProfileHandler(row)} className='[&:nth-child(even)]:bg-gray-100 hover:[&:nth-child(even)]:bg-cblue/20 hover:bg-cblue/20 font-semibold transition-all' {...row.getRowProps()}>
                             {row.cells.map(cell => (
                                 <td className='py-2 px-4' {...cell.getCellProps()}>{cell.render("Cell")}</td>
                             ))}

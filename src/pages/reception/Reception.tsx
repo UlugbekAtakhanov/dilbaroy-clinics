@@ -8,6 +8,7 @@ import { useFoodGetData, useServicesGetData } from '../../hooks/useServicesData'
 import FormControl from '../../utils/form-utils/FormControl'
 import { toLocale } from "../../utils/toLocale"
 import { usePatientsCreateData } from '../../hooks/usePatientsData'
+import toast, { Toaster } from "react-hot-toast"
 
 // form type
 export interface FormValuesProps {
@@ -88,7 +89,7 @@ const validate = (values: FormValuesProps) => {
 const Reception = () => {
 
 	// useQuery hooks
-	const { mutate } = usePatientsCreateData()
+	const { mutate } = usePatientsCreateData({ toast })
 	const { isLoading: servicesIsLoading, data: servicesQuery } = useServicesGetData()
 	const { isLoading: foodIsLoading, data: foodQuery } = useFoodGetData()
 	const { isLoading: doctorsIsLoading, data: doctorsQuery } = useDoctorsGetData()
@@ -139,6 +140,7 @@ const Reception = () => {
 		}, 0)
 		const totalAmount = roomTotal + foodTotal + servicesTotal
 		values = { ...values, total_amount: totalAmount, food_amount: foodTotal }
+		console.log(values)
 		mutate(values)
 		setTimeout(() => {
 			onSubmitProps.setSubmitting(false)
@@ -257,6 +259,8 @@ const Reception = () => {
 			</Formik>
 
 			<div className="h-[300px]"></div>
+
+			<Toaster />
 
 		</div >
 	)
