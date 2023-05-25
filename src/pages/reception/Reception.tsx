@@ -8,7 +8,7 @@ import { useFoodGetData, useServicesGetData } from '../../hooks/useServicesData'
 import FormControl from '../../utils/form-utils/FormControl'
 import { toLocale } from "../../utils/toLocale"
 import { usePatientsCreateData } from '../../hooks/usePatientsData'
-import toast, { Toaster } from "react-hot-toast"
+import toast from "react-hot-toast"
 
 // form type
 export interface FormValuesProps {
@@ -77,6 +77,14 @@ const validate = (values: FormValuesProps) => {
 	if (!values.birthday) {
 		errors.birthday = "Маълумотни тўлдиринг"
 	}
+	
+	if (!values.doctor) {
+		errors.doctor = "Маълумотни тўлдиринг"
+	}
+
+	if (!values.from_date) {
+		errors.from_date = "Маълумотни тўлдиринг"
+	}
 
 	if (!values.room_number || values.room_number === "no") {
 		errors.room_number = "Маълумотни тўлдиринг"
@@ -144,7 +152,7 @@ const Reception = () => {
 		mutate(values)
 		setTimeout(() => {
 			onSubmitProps.setSubmitting(false)
-			onSubmitProps.resetForm()
+			// onSubmitProps.resetForm()
 		}, 3000);
 	}
 
@@ -197,7 +205,7 @@ const Reception = () => {
 											</p>
 										</div>
 										<p className='underline'>
-											Jami - <span className='font-bold'>{specRoom ? toLocale(roomTotal) : null} сўм</span>
+											Жами - <span className='font-bold'>{specRoom ? toLocale(roomTotal) : null} сўм</span>
 										</p>
 									</div>
 								</div>
@@ -216,7 +224,7 @@ const Reception = () => {
 													<FormControl control="input" label="Кун сони" min={1} name="food_duration" type="number" />
 													<p className='text-xs'>(кунига  <span className='font-bold'>{toLocale(foodQuery?.data[0].food_price)}</span> минг сўм)</p>
 												</div>
-												<p className='underline'>Jami - <span className='font-bold'>{formik.values.food_duration > 0 ? toLocale(formik.values.food_duration * foodQuery?.data[0].food_price) : 0} сўм</span></p>
+												<p className='underline'>Жами - <span className='font-bold'>{formik.values.food_duration > 0 ? toLocale(formik.values.food_duration * foodQuery?.data[0].food_price) : 0} сўм</span></p>
 											</>
 										) : null}
 									</div>
@@ -230,8 +238,8 @@ const Reception = () => {
 									</div>
 								</div>
 
-								{/* Jami */}
-								<p className='underline'>Jami - <span className='font-bold'>{toLocale(totalAmount)} сўм</span></p>
+								{/* Жами */}
+								<p className='underline'>Жами - <span className='font-bold'>{toLocale(totalAmount)} сўм</span></p>
 								<button disabled={!formik.isValid || formik.isSubmitting} type='submit' className="button-green mt-6 md:mt-auto w-full flex items-center justify-center gap-2"><UserPlusIcon className='w-6' />Рўйхатга олиш</button>
 							</div>
 
@@ -259,8 +267,6 @@ const Reception = () => {
 			</Formik>
 
 			<div className="h-[300px]"></div>
-
-			<Toaster />
 
 		</div >
 	)

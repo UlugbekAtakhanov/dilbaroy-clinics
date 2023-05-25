@@ -5,11 +5,14 @@ import ReceptionLayout from "./layouts/ReceptionLayout"
 import Reception from "./pages/reception/Reception"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import ReceptionList from "./pages/reception/ReceptionList"
+import { Toaster } from "react-hot-toast"
+import PatientstLayout from "./layouts/PatientsLayout"
 
 const App = () => {
 	return (
 		<div>
 			<Outlet />
+			<Toaster />
 			<ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
 		</div>
 	)
@@ -36,9 +39,9 @@ export const routes = createRoutesFromElements(
       <Route index element={<Doctor />} />
     </Route> */}
 
-		{/* <Route path="/patients" element={<PatientstLayout />}>
-      <Route path=":patientId/:slug" element={<PatientProfile />} />
-    </Route> */}
+		<Route path="/patients" element={<PrivateRoute><PatientstLayout /></PrivateRoute>}>
+			{/* <Route path=":patientId/:slug" element={<PatientProfile />} /> */}
+		</Route>
 
 		<Route path="*" element={<Navigate to="/login" />} />
 

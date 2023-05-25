@@ -11,7 +11,12 @@ const login = async (inputData: LoginFormValuesProps): Promise<any> => {
     return data
 }
 
-export const useTokenGetData = (navigate: NavigateFunction) => {
+
+interface UseTokenGetDataProps {
+    navigate: NavigateFunction
+    toast?: any
+}
+export const useTokenGetData = ({ navigate, toast }: UseTokenGetDataProps) => {
     return useMutation<any, Error, LoginFormValuesProps>((data) => login(data), {
 
         // onSuccess
@@ -22,6 +27,7 @@ export const useTokenGetData = (navigate: NavigateFunction) => {
 
         // onError
         onError: (error) => {
+            toast.error("Маълумотларни туғри киритинг")
             console.log(error)
         },
 

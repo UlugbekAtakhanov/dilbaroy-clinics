@@ -92,12 +92,12 @@ export const usePatientsCreateData = ({ toast }: UsePatientsCreateDataProps) => 
     return useMutation<any, Error, FormValuesProps>((data) => fetchData.post(patientsUrl, data), {
         // onSuccess
         onSuccess: () => {
-            toast.success("Added succesfully")
+            toast.success("Маълумотлар мувафақиятли киритилди")
         },
 
         // onError
         onError: (error) => {
-            toast.error("Hatolik yuz berdi, qaytadan kiriting")
+            toast.error("Хатолик юз берди, қайтадан киритинг")
             console.log(error)
         },
     })

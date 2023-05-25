@@ -5,6 +5,8 @@ import FormControl from '../utils/form-utils/FormControl'
 import { useTokenGetData } from '../hooks/useTokenData'
 import { useNavigate } from 'react-router-dom'
 import { getFromLS } from '../utils/localStorage'
+import toast from "react-hot-toast"
+
 
 // form validation
 const validate = (values: LoginFormValuesProps) => {
@@ -27,7 +29,7 @@ const validate = (values: LoginFormValuesProps) => {
 
 const Login = () => {
 	const navigate = useNavigate()
-	const { mutate } = useTokenGetData(navigate)
+	const { mutate } = useTokenGetData({navigate, toast})
 
 	useEffect(() => {
 		if (getFromLS("token")) {
