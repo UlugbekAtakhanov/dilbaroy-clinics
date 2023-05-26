@@ -77,7 +77,7 @@ const validate = (values: FormValuesProps) => {
 	if (!values.birthday) {
 		errors.birthday = "Маълумотни тўлдиринг"
 	}
-	
+
 	if (!values.doctor) {
 		errors.doctor = "Маълумотни тўлдиринг"
 	}
@@ -109,10 +109,11 @@ const Reception = () => {
 		return { ...acc, [current.room_comfortable]: count }
 	}, {})
 
+
 	// select options
 	const doctorsOptions = doctorsQuery?.data.map((doctor: DoctorProps) => ({ key: doctor.full_name, value: doctor.id })) || []
 	const roomsOptions = roomsQuery?.data.map((rooms: RoomSectionProps) => {
-		return rooms?.rooms.map(({ id, room_number, room_personal, room_patients, room_comfortable }: RoomProps) => ({ key: `${room_number} (${room_personal} ўринлик, ${room_patients} ўрин бўш, ${room_comfortable})`, value: id })) || []
+		return rooms?.rooms.map(({ id, room_number, room_personal, room_patients, room_comfortable }: RoomProps) => ({ key: `${room_number}  (${room_patients} ўрин бўш, ${room_personal} ўринлик,  ${room_comfortable})`, value: id, room_patients })) || []
 	})
 	const servicesApparatlar = servicesQuery?.data.map((service: ServiceProps) => ({ key: service.service_name, value: service.id, price: service.service_price })) || []
 
@@ -255,8 +256,8 @@ const Reception = () => {
 								})}
 
 								<div className='text-right'>
-									<p><span className='font-bold'>Lux</span> - {roomsStat.Lux} та хона бўш</p>
-									<p><span className='font-bold'>Oddiy</span> - {roomsStat.Oddiy} та хона бўш</p>
+									<p><span className='font-bold'>Люкс</span> - {roomsStat["Люкс"]} та хонада бўш урин бор</p>
+									<p><span className='font-bold'>Оддий</span> - {roomsStat["Оддий"]} та хонада бўш урин бор</p>
 								</div>
 
 							</div>

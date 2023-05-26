@@ -44,10 +44,8 @@ const PatientTable = () => {
     })
 
     // go to profile
-    const goToProfileHandler = () => {
-        // const goToProfileHandler = (row: Row<PatientProps>) => {
-        navigate(`/patients`)
-        // navigate(`/patients/${row.original.id}/${row.original.slug_name}`)
+    const goToProfileHandler = (row: Row<PatientProps>) => {
+        navigate(`/patients/${row.original.id}/${row.original.slug_name}`)
     }
 
     return (

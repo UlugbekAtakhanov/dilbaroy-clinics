@@ -4,9 +4,7 @@ import { FormValuesProps } from "../pages/reception/Reception"
 import { format } from "date-fns"
 
 const patientsUrl = "/api/register/"
-// const singlePatientUrl = "/api/bemor/"
-
-// const getPatientsByUrl = "/api/register/"
+const singlePatientUrl = "/api/bemor/"
 const getPatientsByUrl = "/api/patient_statistics/"
 
 // const patientsLabUrl = "/api/analysis/"
@@ -15,11 +13,12 @@ const getPatientsByUrl = "/api/patient_statistics/"
 // const doctorConcUrl = "/api/external/"
 
 
+
+
 interface UsePatientsGetDataProps {
     refetch?: { enabled: boolean },
     searchTerm?: { from: string, to: string }
 }
-
 // get all patients
 export const usePatientsGetData = ({ searchTerm }: UsePatientsGetDataProps) => {
     // export const usePatientsGetData = ({ dispatch, searchTerm, serviceSearchParamsTerm, doctorSearchParamsTerm, refetch, navigate }) => {
@@ -105,24 +104,24 @@ export const usePatientsCreateData = ({ toast }: UsePatientsCreateDataProps) => 
 
 
 
-
+interface UseSinglePatientGetDataProps {
+    patientId: string | undefined
+}
 // get a single patient
-// export const useSinglePatientGetData = (patientId) => {
+export const useSinglePatientGetData = ({ patientId }: UseSinglePatientGetDataProps) => {
 
-//     return useQuery(["patients", patientId], () => fetchData.get(`${singlePatientUrl}${patientId}/`), {
-//         // onSuccess
-//         onSuccess: ({ data }) => {
-//             // console.log(data)
-//         },
+    return useQuery(["patients", patientId], () => fetchData.get(`${singlePatientUrl}${patientId}/`), {
+        // onSuccess
+        onSuccess: () => { },
 
-//         // onError
-//         onError: (error) => {
-//             console.log(error)
-//         },
+        // onError
+        onError: (error) => {
+            console.log(error)
+        },
 
-//         // refetchOnWindowFocus: false
-//     })
-// }
+        refetchOnWindowFocus: false
+    })
+}
 
 
 

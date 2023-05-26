@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import ReceptionList from "./pages/reception/ReceptionList"
 import { Toaster } from "react-hot-toast"
 import PatientstLayout from "./layouts/PatientsLayout"
+import PatientProfile from "./pages/patient-profile/PatientProfile"
 
 const App = () => {
 	return (
@@ -40,7 +41,7 @@ export const routes = createRoutesFromElements(
     </Route> */}
 
 		<Route path="/patients" element={<PrivateRoute><PatientstLayout /></PrivateRoute>}>
-			{/* <Route path=":patientId/:slug" element={<PatientProfile />} /> */}
+			<Route path=":patientId/:slug" element={<PatientProfile />} />
 		</Route>
 
 		<Route path="*" element={<Navigate to="/login" />} />

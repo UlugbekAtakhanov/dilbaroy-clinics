@@ -24,7 +24,7 @@ export const COLUMNS = [
         )
     },
     {
-        Header: "Ф.И.О.",
+        Header: "Бемор Ф.И.О.",
         accessor: (data: PatientProps) => [data.full_name, data.phone_number],
         Cell: ({ row: { original } }: any) => (
             <div>
