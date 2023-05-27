@@ -47,16 +47,26 @@ export const COLUMNS = [
 
             return (
                 <div>
-                    {original?.room && (
+                    {original.room_status ? (
                         <div className="flex gap-2 items-center">
                             <span>{room_name} хона</span>
-                            {to < currentDate ? (
-                                <div className="bg-rose-200 text-rose-700 py-1 px-2 rounded-[30px] text-xs w-max">{minus} kun qarz</div>
-                            ) : (
-                                <div className="bg-green-200 text-green-700 py-1 px-2 rounded-[30px] text-xs w-max">{plus} kun haq</div>
+                            <div className="bg-sky-200 text-sky-700 py-1 px-2 rounded-[30px] text-xs w-max">Tugatildi</div>
+                        </div>
+                    ) : (
+                        <div>
+                            {original?.room && (
+                                <div className="flex gap-2 items-center">
+                                    <span>{room_name} хона</span>
+                                    {to < currentDate ? (
+                                        <div className="bg-rose-200 text-rose-700 py-1 px-2 rounded-[30px] text-xs w-max">{minus} kun qarz</div>
+                                    ) : (
+                                        <div className="bg-green-200 text-green-700 py-1 px-2 rounded-[30px] text-xs w-max">{plus} kun haq</div>
+                                    )}
+                                </div>
                             )}
                         </div>
                     )}
+
                     {original?.room && <p className="text-xs text-slate-400">{formatDate(from)} - {formatDate(to)}</p>}
                 </div>
             )
