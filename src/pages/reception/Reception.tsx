@@ -22,6 +22,7 @@ export interface FormValuesProps {
 	room_number: string,
 	from_date: string,
 	duration: number,
+	room_amount: number,
 
 	food: boolean,
 	food_duration: number,
@@ -130,6 +131,7 @@ const Reception = () => {
 		room_number: "",
 		from_date: "",
 		duration: 1,
+		room_amount: 0,
 
 		food: false,
 		food_duration: 1,
@@ -148,8 +150,8 @@ const Reception = () => {
 			return acc += el.service_price
 		}, 0)
 		const totalAmount = roomTotal + foodTotal + servicesTotal
-		values = { ...values, total_amount: totalAmount, food_amount: foodTotal }
-		console.log(values)
+		values = { ...values, total_amount: totalAmount, food_amount: foodTotal, room_amount: roomTotal }
+		// console.log(values)
 		mutate(values)
 		setTimeout(() => {
 			onSubmitProps.setSubmitting(false)

@@ -1,7 +1,9 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { fetchData } from "../axios/global-instances"
 import { FormValuesProps } from "../pages/reception/Reception"
 import { format } from "date-fns"
+import { PatientProps } from "../types/patientTypes"
+import { PatientUpdateProps } from "../pages/patient-profile/PatientProfile"
 
 const patientsUrl = "/api/register/"
 const singlePatientUrl = "/api/bemor/"
@@ -105,14 +107,17 @@ export const usePatientsCreateData = ({ toast }: UsePatientsCreateDataProps) => 
 
 
 interface UseSinglePatientGetDataProps {
-    patientId: string | undefined
+    patientId: string | undefined,
+    addPatient: (patient: PatientProps) => void
 }
 // get a single patient
-export const useSinglePatientGetData = ({ patientId }: UseSinglePatientGetDataProps) => {
+export const useSinglePatientGetData = ({ patientId, addPatient }: UseSinglePatientGetDataProps) => {
 
     return useQuery(["patients", patientId], () => fetchData.get(`${singlePatientUrl}${patientId}/`), {
         // onSuccess
-        onSuccess: () => { },
+        onSuccess: ({ data }) => {
+            addPatient(data[0])
+        },
 
         // onError
         onError: (error) => {
@@ -122,6 +127,33 @@ export const useSinglePatientGetData = ({ patientId }: UseSinglePatientGetDataPr
         refetchOnWindowFocus: false
     })
 }
+
+
+interface UsePatientUpdateProps {
+    toast: any
+    setEdit: React.Dispatch<React.SetStateAction<boolean>>
+    patientId: string | undefined,
+}
+// patient update
+export const usePatientUpdate = ({ toast, setEdit, patientId }: UsePatientUpdateProps) => {
+    const queryClient = useQueryClient()
+    return useMutation<any, Error, PatientUpdateProps>((data) => fetchData.put(`${singlePatientUrl}${patientId}/`, data), {
+
+        // onSuccess
+        onSuccess: () => {
+            toast.success("Маълумотлар мувафақиятли янгиланди")
+            queryClient.invalidateQueries(["patients", patientId])
+            setEdit(false)
+        },
+
+        // onError
+        onError: (error) => {
+            console.log(error)
+            toast.error("Хатолик юз берди, қайтадан киритинг")
+        },
+    })
+}
+
 
 
 

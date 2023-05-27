@@ -1,4 +1,4 @@
-import { DoctorProps, RoomProps, RoomSectionProps } from "../pages/reception/Reception"
+import { DoctorProps, RoomProps, ServiceProps } from "../pages/reception/Reception"
 
 export interface PatientProps {
     address: string,
@@ -18,7 +18,8 @@ export interface PatientProps {
     room: RoomProps,
     room_refund: number,
     room_status: boolean,
-    service: RoomSectionProps[],
+    room_amount: number,
+    service: ServiceProps[],
     slug_name: string,
     total_amount: number,
     total_refund: number
