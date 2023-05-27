@@ -27,7 +27,7 @@ export const usePatientsGetData = ({ searchTerm }: UsePatientsGetDataProps) => {
     // console.log(searchTerm)
     const config = {
         params: {
-            from_date: searchTerm?.from || format(new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), "yyyy-MM-dd"),
+            from_date: searchTerm?.from || format(new Date(Date.now() - 1000 * 60 * 60 * 24 * 30), "yyyy-MM-dd"),
             to_date: searchTerm?.to || format(new Date(Date.now()), "yyyy-MM-dd"),
         }
     }

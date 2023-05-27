@@ -16,7 +16,7 @@ const GlobalSearch = ({ getPatientsFn, globalFilter, setGlobalFilter }: GlobalSe
 
 
 
-    const [date, setDate] = useState([{ startDate: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10), endDate: new Date(Date.now()), key: 'selection' }])
+    const [date, setDate] = useState([{ startDate: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30), endDate: new Date(Date.now()), key: 'selection' }])
     const startDate = format(date[0].startDate, "yyyy-MM-dd")
     const endDate = format(date[0].endDate, "yyyy-MM-dd")
 

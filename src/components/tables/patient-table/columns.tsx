@@ -38,22 +38,26 @@ export const COLUMNS = [
         Header: "Палаталар",
         accessor: (data: PatientProps) => [data?.room?.room_number],
         Cell: ({ row: { original } }: any) => {
-            const from = formatDate(new Date(original.from_date).getTime())
-            const to = formatDate(new Date(original.from_date).getTime() + daysInMiliseconds(original.duration))
+            const from = new Date(original.from_date).getTime()
+            const to = new Date(original.from_date).getTime() + daysInMiliseconds(original.duration)
             const room_name = original?.room?.room_number.split(" ")[0]
+            const currentDate = Date.now()
+            const minus = Math.round(((currentDate - to) / (1000 * 60 * 60 * 24)))
+            const plus = Math.round(((to - currentDate) / (1000 * 60 * 60 * 24)))
+
             return (
                 <div>
                     {original?.room && (
                         <div className="flex gap-2 items-center">
                             <span>{room_name} хона</span>
-                            {original.room_status ? (
-                                <div className="bg-rose-200 text-rose-700 py-1 px-2 rounded-[30px] text-xs w-max">Тугатилди</div>
+                            {to < currentDate ? (
+                                <div className="bg-rose-200 text-rose-700 py-1 px-2 rounded-[30px] text-xs w-max">{minus} kun qarz</div>
                             ) : (
-                                <div className="bg-green-200 text-green-700 py-1 px-2 rounded-[30px] text-xs w-max">Жараёнда</div>
+                                <div className="bg-green-200 text-green-700 py-1 px-2 rounded-[30px] text-xs w-max">{plus} kun haq</div>
                             )}
                         </div>
                     )}
-                    {original?.room && <p className="text-xs text-slate-400">{from} - {to}</p>}
+                    {original?.room && <p className="text-xs text-slate-400">{formatDate(from)} - {formatDate(to)}</p>}
                 </div>
             )
         }

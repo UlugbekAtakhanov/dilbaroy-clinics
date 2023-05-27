@@ -27,22 +27,20 @@ export interface PatientUpdateProps {
 const PatientProfile = () => {
     const { data: foodData, isLoading: foodIsLoading } = useFoodGetData()
     const { patient, addPatient } = usePatientStore(state => state)
-
+    
     const [edit, setEdit] = useState<boolean>(false)
 
     const params = useParams()
     const { isLoading } = useSinglePatientGetData({ patientId: params?.patientId, addPatient })
     const { mutate } = usePatientUpdate({ toast, setEdit, patientId: params?.patientId, })
-
-
-
-
+    
+    
 
     if (isLoading || foodIsLoading) return <Spinner />
 
-    if (!patient) {
-        throw new Error("There is no patient data")
-    }
+    // if (!patient) {
+    //     throw new Error("There is no patient data")
+    // }
 
     const extraRoomAmount = patient?.duration * patient?.room?.room_price - patient?.room_amount
     const extraFoodAmount = patient?.food_duration * foodData?.data[0].food_price - patient?.food_amount
