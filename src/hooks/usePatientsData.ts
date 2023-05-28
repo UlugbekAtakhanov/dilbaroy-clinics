@@ -6,14 +6,10 @@ import { PatientProps } from "../types/patientTypes"
 import { PatientUpdateProps } from "../pages/patient-profile/PatientProfile"
 
 const patientsUrl = "/api/register/"
-const singlePatientUrl = "/api/bemor/"
 const getPatientsByUrl = "/api/patient_statistics/"
 
-// const patientsLabUrl = "/api/analysis/"
-// const patientLabAnalysisUrl = "/api/analysis/"
-
-// const doctorConcUrl = "/api/external/"
-
+const singlePatientUrl = "/api/bemor/"
+const singlePatientStopUrl = "/api/close_room/"
 
 
 
@@ -153,6 +149,31 @@ export const usePatientUpdate = ({ toast, setEdit, patientId }: UsePatientUpdate
         },
     })
 }
+
+
+interface UsePatientStopProps {
+    toast: any
+    patientId: string | undefined,
+}
+// patient stop
+export const usePatientStop = ({ toast, patientId }: UsePatientStopProps) => {
+    return useMutation(() => fetchData.post(`${singlePatientStopUrl}`, { patient_id: patientId }), {
+
+        // onSuccess
+        onSuccess: (data) => {
+            console.log(data)
+            toast.success("Мувафақиятли тугатилди")
+        },
+
+        // onError
+        onError: (error) => {
+            console.log(error)
+            toast.error("Хатолик юз берди")
+        },
+    })
+}
+
+
 
 
 

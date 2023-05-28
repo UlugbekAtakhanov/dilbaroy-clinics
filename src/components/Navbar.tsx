@@ -18,7 +18,6 @@ const Navbar = () => {
                 </div>
                 <Dropdown logoutHandler={logoutHandler} />
             </div>
-            {/* <BreadCrumb /> */}
         </>
     )
 }

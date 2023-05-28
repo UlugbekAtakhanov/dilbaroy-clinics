@@ -1,13 +1,12 @@
 import { Menu, Transition } from '@headlessui/react'
-import { ArrowLeftOnRectangleIcon, ChevronDownIcon, DocumentDuplicateIcon, PencilIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftOnRectangleIcon, ChevronDownIcon, DocumentDuplicateIcon, PencilIcon, PresentationChartLineIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
 
 
 const dropdownList = [
     { title: "Рўйхатга олиш", icon: <PencilIcon />, url: "/reception", status: "reception" },
     { title: "Беморлар рўйхати", icon: <DocumentDuplicateIcon />, url: "/reception/list", status: "reception" },
-    // { title: "Шифокор", icon: <UserIcon />, url: "/doctor", status: "doctor" },
-    // { title: "Лаборант", icon: <BeakerIcon />, url: "/labarant", status: "labarant" },
+    { title: "Статистика", icon: <PresentationChartLineIcon />, url: "/statistics", status: "reception" },
 ]
 
 const menuItemClass = (active: boolean, disabled: boolean) => ` ${disabled ? "text-gray-400  pointer-events-none" : active ? "bg-green-200 text-black" : null} flex items-center gap-2 cursor-pointer m-[1px] rounded-md py-1 px-2 whitespace-nowrap [&:last-child]:border-t `

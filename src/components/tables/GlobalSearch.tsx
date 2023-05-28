@@ -40,7 +40,6 @@ const GlobalSearch = ({ getPatientsFn, globalFilter, setGlobalFilter }: GlobalSe
 
 
     return (
-        // <div className={` flex flex-col gap-2 my-4 md:items-center md:flex-row`}>
         <div className={`${isFetching ? "opacity-50 pointer-events-none" : ""} flex flex-col gap-2 my-4 md:items-center md:flex-row`}>
             <div className='flex-1 leading-3'>
                 <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
@@ -53,6 +52,7 @@ const GlobalSearch = ({ getPatientsFn, globalFilter, setGlobalFilter }: GlobalSe
             <div className='self-end'>
                 <button onClick={searchHandler} className='text-[14px] button-red p-[2px] px-3 h-full block'>Қидириш</button>
             </div>
+
         </div>
     )
 }

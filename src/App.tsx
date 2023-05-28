@@ -8,6 +8,8 @@ import ReceptionList from "./pages/reception/ReceptionList"
 import { Toaster } from "react-hot-toast"
 import PatientstLayout from "./layouts/PatientsLayout"
 import PatientProfile from "./pages/patient-profile/PatientProfile"
+import StatisticsLayout from "./layouts/StatisticsLayout"
+import StatisticsPage from "./pages/statistics/StatisticsPage"
 
 const App = () => {
 	return (
@@ -32,13 +34,9 @@ export const routes = createRoutesFromElements(
 			<Route path="list" element={<ReceptionList />} />
 		</Route>
 
-		{/* <Route path="/labarant" element={<PrivateRoute role="labarant"><LabarantLayout /></PrivateRoute>}>
-      <Route index element={<Labarant />} />
-    </Route> */}
-
-		{/* <Route path="/doctor" element={<PrivateRoute role="doctor"><DoctorLayout /></PrivateRoute>}>
-      <Route index element={<Doctor />} />
-    </Route> */}
+		<Route path="/statistics" element={<PrivateRoute><StatisticsLayout /></PrivateRoute>}>
+			<Route index element={<StatisticsPage />} />
+		</Route>
 
 		<Route path="/patients" element={<PrivateRoute><PatientstLayout /></PrivateRoute>}>
 			<Route path=":patientId/:slug" element={<PatientProfile />} />
