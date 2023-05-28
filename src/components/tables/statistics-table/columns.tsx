@@ -1,86 +1,79 @@
+import { DoctorStatProps } from "../../../types/doctorStatTypes";
 import { PatientProps } from "../../../types/patientTypes";
-import { daysInMiliseconds, formatDate } from "../../../utils/daysInMiliseconds";
+import { toLocale } from "../../../utils/toLocale";
 
 export const COLUMNS = [
     {
-        Header: "Рўйхат рақами",
-        accessor: (data: PatientProps) => [data.id],
-        Cell: ({ row: { original } }: any) => (
-            <div>
-                <p>{`${original.id}/${new Date().getFullYear()}`}</p>
-            </div>
-        )
+        Header: "Шифокор Ф.И.О.",
+        accessor: (data: DoctorStatProps) => [data.full_name]
     },
     {
-        Header: "Пасс. маълумоти",
-        accessor: (data: PatientProps) => {
-            if (data.birthday) return [data.pass_data, formatDate(new Date(data.birthday))]
-        },
-        Cell: ({ row: { original } }: any) => (
-            <div>
-                <p>{original.pass_data}</p>
-                <p className="text-xs print:text-[10px] text-slate-400" title="Tug'ilgan sana">{formatDate(new Date(original.birthday))}</p>
-            </div>
-        )
-    },
-    {
-        Header: "Бемор Ф.И.О.",
-        accessor: (data: PatientProps) => [data.full_name, data.phone_number],
-        Cell: ({ row: { original } }: any) => (
-            <div>
-                <p>{original.full_name}</p>
-                <p className="text-xs print:text-[10px] text-slate-400" title="Telefon raqam">{original.phone_number}</p>
-                <p className="text-xs print:text-[10px] text-slate-400" title="Ish joyi">{original.workplace}</p>
-            </div>
-        )
-    },
-    {
-        Header: "Палаталар",
-        accessor: (data: PatientProps) => [data?.room?.room_number],
+        Header: "Палатага ётқизилган беморлар сони",
+        accessor: (data: DoctorStatProps) => [data.patients.length],
         Cell: ({ row: { original } }: any) => {
-            const from = new Date(original.from_date).getTime()
-            const to = new Date(original.from_date).getTime() + daysInMiliseconds(original.duration)
-            const room_name = original?.room?.room_number.split(" ")[0]
-            const currentDate = Date.now()
-            const minus = Math.round(((currentDate - to) / (1000 * 60 * 60 * 24)))
-            const plus = Math.round(((to - currentDate) / (1000 * 60 * 60 * 24)))
-
-            return (
-                <div>
-                    {original.room_status ? (
-                        <div className="flex gap-2 items-center">
-                            <span>{room_name} хона</span>
-                            <div className="bg-sky-200 text-sky-700 py-1 px-2 rounded-[30px] text-xs w-max">Тугатилди</div>
-                        </div>
-                    ) : (
-                        <div>
-                            {original?.room && (
-                                <div className="flex gap-2 items-center">
-                                    <span>{room_name} хона</span>
-                                    {to < currentDate ? (
-                                        <div className="bg-rose-200 text-rose-700 py-1 px-2 rounded-[30px] text-xs w-max">{minus} кун қарз</div>
-                                    ) : (
-                                        <div className="bg-green-200 text-green-700 py-1 px-2 rounded-[30px] text-xs w-max">{plus} кун ҳақ</div>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {original?.room && <p className="text-xs text-slate-400">{formatDate(from)} - {formatDate(to)}</p>}
-                </div>
-            )
+            return <p className="text-center">{toLocale(original.patients.length)}</p>
         }
     },
     {
-        Header: "Шифокор",
-        accessor: (data: PatientProps) => [data?.doctor?.full_name],
+        Header: "Умумий сумма",
+        accessor: (data: DoctorStatProps) => [data.patients],
         Cell: ({ row: { original } }: any) => {
-            return (
-                <div>
-                    {original?.doctor && <p>{original.doctor.full_name}</p>}
-                </div>
-            )
+            const total = original.patients.reduce((acc: number, current: PatientProps) => {
+                return acc += current.total_amount
+            }, 0)
+            return <p className="text-center">{toLocale(total)}</p>
+        }
+    },
+    {
+        Header: "Қайтарилди",
+        accessor: (data: DoctorStatProps) => [data.patients],
+        Cell: ({ row: { original } }: any) => {
+            const total = original.patients.reduce((acc: number, current: PatientProps) => {
+                return acc += current.total_refund
+            }, 0)
+            return <p className="text-center">{toLocale(total)}</p>
+        }
+    },
+    {
+        Header: "Палатадан тушган пул",
+        accessor: (data: DoctorStatProps) => [data.patients],
+        Cell: ({ row: { original } }: any) => {
+            const total = original.patients.reduce((acc: number, current: PatientProps) => {
+                return acc += current.room_amount
+            }, 0)
+            return <p className="text-center">{toLocale(total)}</p>
+        }
+    },
+    {
+        Header: "Таомдан тушган пул",
+        accessor: (data: DoctorStatProps) => [data.patients],
+        Cell: ({ row: { original } }: any) => {
+            const total = original.patients.reduce((acc: number, current: PatientProps) => {
+                return acc += current.food_amount
+            }, 0)
+            return <p className="text-center">{toLocale(total)}</p>
+        }
+    },
+    {
+        Header: "EKG дан тушган пул",
+        accessor: (data: DoctorStatProps) => [data.patients],
+        Cell: ({ row: { original } }: any) => {
+            const total = original.patients.reduce((acc: number, current: PatientProps) => {
+                const el = current.service.find(item => item.service_name === "EKG")?.service_price ?? 0
+                return acc += el
+            }, 0)
+            return <p className="text-center">{toLocale(total)}</p>
+        }
+    },
+    {
+        Header: "Rentgen дан тушган пул",
+        accessor: (data: DoctorStatProps) => [data.patients],
+        Cell: ({ row: { original } }: any) => {
+            const total = original.patients.reduce((acc: number, current: PatientProps) => {
+                const el = current.service.find(item => item.service_name === "Rentgen")?.service_price ?? 0
+                return acc += el
+            }, 0)
+            return <p className="text-center">{toLocale(total)}</p>
         }
     },
 ]

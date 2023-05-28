@@ -4,20 +4,20 @@ import { COLUMNS } from './columns'
 
 import { ChevronDownIcon, PrinterIcon } from "@heroicons/react/24/outline"
 import { useReactToPrint } from 'react-to-print'
-import { usePatientsGetData } from '../../../hooks/usePatientsData'
-import { PatientProps } from '../../../types/patientTypes'
 import ReceptionEditInline from '../../edit-inline/ReceptionEditInline'
 import Spinner from '../../spinner/Spinner'
 import GlobalSearch from '../GlobalSearch'
 import SelectTableColumn from '../SelectTableColumn'
+import { useDoctorStatisticsGetData } from '../../../hooks/useStatisticsData'
+import { DoctorStatProps } from '../../../types/doctorStatTypes'
 
 
 const StatisticsTable = () => {
     const printTableRef = useRef<HTMLDivElement>(null)
 
     // fetching patients list
-    const { isLoading: patientsIsLoading, isFetching: patientsIsFetching, data: patients } = usePatientsGetData({})
-    const fetchedData = patients?.data
+    const { data: docStatisticsData, isLoading: docStatsIsLoading, isFetching: docStatsIsFetching } = useDoctorStatisticsGetData({})
+    const fetchedData = docStatisticsData?.data
 
     // table features
     const columns = useMemo(() => COLUMNS, [])
@@ -46,10 +46,10 @@ const StatisticsTable = () => {
             <h1 className='mb-4 font-semibold text-center'>Статистика</h1>
 
             {/* filter section */}
-            <GlobalSearch getPatientsFn={usePatientsGetData} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+            <GlobalSearch getPatientsFn={useDoctorStatisticsGetData} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
 
             {/* table section */}
-            {patientsIsLoading ? <Spinner /> : (
+            {docStatsIsLoading ? <Spinner /> : (
                 <>
 
                     {/* sorting, filtering */}
@@ -70,7 +70,7 @@ const StatisticsTable = () => {
 
                         {/* table */}
                         <div className='overflow-x-scroll print:overflow-x-hidden'>
-                            {patientsIsFetching ? <Spinner /> : (
+                            {docStatsIsFetching ? <Spinner /> : (
                                 <Table
                                     getTableProps={getTableProps}
                                     headerGroups={headerGroups}
@@ -92,11 +92,11 @@ export default StatisticsTable
 
 
 interface TProps {
-    getTableProps: (propGetter?: TablePropGetter<PatientProps> | undefined) => TableProps,
-    headerGroups: HeaderGroup<PatientProps>[],
-    rows: Row<PatientProps>[],
-    getTableBodyProps: (propGetter?: TableBodyPropGetter<PatientProps> | undefined) => TableBodyProps,
-    prepareRow: (row: Row<PatientProps>) => void,
+    getTableProps: (propGetter?: TablePropGetter<DoctorStatProps> | undefined) => TableProps,
+    headerGroups: HeaderGroup<DoctorStatProps>[],
+    rows: Row<DoctorStatProps>[],
+    getTableBodyProps: (propGetter?: TableBodyPropGetter<DoctorStatProps> | undefined) => TableBodyProps,
+    prepareRow: (row: Row<DoctorStatProps>) => void,
 }
 
 function Table({ getTableProps, headerGroups, rows, getTableBodyProps, prepareRow }: TProps) {

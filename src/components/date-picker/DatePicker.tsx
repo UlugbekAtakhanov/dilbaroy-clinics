@@ -38,7 +38,6 @@ const DatePicker = ({ date, setDate }: DatePickerProps) => {
                 <div className='absolute top-[110%] shadow right-0 z-10'>
                     <DateRange
                         onChange={(item) => {
-                            console.log([item.selection])
                             setDate([item.selection])
                         }}
                         moveRangeOnFirstSelection={false}
