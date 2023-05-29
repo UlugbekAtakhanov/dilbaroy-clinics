@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { fetchData } from "../axios/global-instances"
 import { format } from "date-fns"
 
+
 const docStatsUrl = "/api/doctor_statistics/"
 const roomStatsUrl = "/api/room_statistics/"
 
@@ -31,6 +32,7 @@ export const useDoctorStatisticsGetData = ({ searchTerm }: UseDoctorStatisticsGe
 
         // enabled: refetch?.enabled,
         refetchOnWindowFocus: false
+
     })
 }
 

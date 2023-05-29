@@ -41,6 +41,7 @@ const StatisticsTable = () => {
         documentTitle: "table",
     })
 
+    console.log(rows)
 
     return (
         <div className='p-4 pb-[200px]'>
@@ -112,19 +113,43 @@ interface AccProps {
 }
 
 function Table({ getTableProps, headerGroups, rows, getTableBodyProps, prepareRow }: TProps) {
-    console.log(rows)
     const res = rows.reduce((acc: AccProps, current: Row<DoctorStatProps>) => {
-        const item = current.cells
+        const item = current?.cells
+        // calculation
+        const r = current.original.patients.reduce((t, curr) => {
+            const ekg_amount = curr.service.find(item => item.service_name === "EKG")?.service_price ?? 0
+            const rentgen_amount = curr.service.find(item => item.service_name === "Rentgen")?.service_price ?? 0
+            return {
+                ...t,
+                total_amount: curr.total_amount,
+                total_refund: curr.total_refund,
+                room_amount: curr.room_amount,
+                food_amount: curr.food_amount,
+                ekg_amount,
+                rentgen_amount
+            }
+        }, { total_amount: 0, total_refund: 0, room_amount: 0, food_amount: 0, ekg_amount: 0, rentgen_amount: 0 })
         acc = {
             ...acc,
             patCount: acc.patCount + item[1]?.value,
-            totalAmount: acc.totalAmount + item[2]?.value,
-            totalRefund: acc.totalRefund + item[3]?.value,
-            roomAmount: acc.roomAmount + item[4]?.value,
-            foodAmount: acc.foodAmount + item[5]?.value,
-            ekgAmount: acc.ekgAmount + item[6]?.value,
-            rentgenAmount: acc.rentgenAmount + item[7]?.value,
+            totalAmount: acc.totalAmount + r.total_amount,
+            totalRefund: acc.totalRefund + r.total_refund,
+            roomAmount: acc.roomAmount + r.room_amount,
+            foodAmount: acc.foodAmount + r.food_amount,
+            ekgAmount: acc.ekgAmount + r.ekg_amount,
+            rentgenAmount: acc.rentgenAmount + r.rentgen_amount,
         }
+        // const item = current?.cells
+        // acc = {
+        //     ...acc,
+        //     patCount: acc.patCount + item[1]?.value,
+        //     totalAmount: acc.totalAmount + item[2]?.value,
+        //     totalRefund: acc.totalRefund + item[3]?.value,
+        //     roomAmount: acc.roomAmount + item[4]?.value,
+        //     foodAmount: acc.foodAmount + item[5]?.value,
+        //     ekgAmount: acc.ekgAmount + item[6]?.value,
+        //     rentgenAmount: acc.rentgenAmount + item[7]?.value,
+        // }
         return acc
     }, { patCount: 0, totalAmount: 0, totalRefund: 0, roomAmount: 0, foodAmount: 0, ekgAmount: 0, rentgenAmount: 0 })
 
