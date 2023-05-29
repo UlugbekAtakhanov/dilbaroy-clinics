@@ -190,7 +190,7 @@ const Reception = () => {
 							</div>
 
 							<div className='flex flex-col gap-4'>
-								<FormControl control="select" label="Шифокор кўруви" name="doctor" options={[{ key: "Докторни танланг", value: "no" }, ...doctorsOptions]} />
+								<FormControl control="select" label="Шифокор" name="doctor" options={[{ key: "Докторни танланг", value: "no" }, ...doctorsOptions]} />
 
 								{/* Palata */}
 								<div className='flex flex-col gap-1'>

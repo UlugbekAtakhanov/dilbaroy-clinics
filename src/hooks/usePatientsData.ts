@@ -28,7 +28,7 @@ export const usePatientsGetData = ({ searchTerm }: UsePatientsGetDataProps) => {
     return useQuery(["patients"], () => fetchData.get(getPatientsByUrl, config), {
 
         // onSuccess
-        onSuccess: () => {},
+        onSuccess: () => { },
 
         // onError
         onError: (error) => {
@@ -50,7 +50,8 @@ export const usePatientsCreateData = ({ toast }: UsePatientsCreateDataProps) => 
 
     return useMutation<any, Error, FormValuesProps>((data) => fetchData.post(patientsUrl, data), {
         // onSuccess
-        onSuccess: () => {
+        onSuccess: (data) => {
+            console.log(data)
             toast.success("Маълумотлар мувафақиятли киритилди")
         },
 

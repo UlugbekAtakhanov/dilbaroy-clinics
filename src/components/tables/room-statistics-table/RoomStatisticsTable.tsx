@@ -10,6 +10,7 @@ import GlobalSearch from '../GlobalSearch'
 import SelectTableColumn from '../SelectTableColumn'
 import { useRoomStatisticsGetData } from '../../../hooks/useStatisticsData'
 import { RoomStatProps } from '../../../types/doctorStatTypes'
+import { toLocale } from '../../../utils/toLocale'
 
 
 const RoomStatisticsTable = () => {
@@ -101,6 +102,17 @@ interface TProps {
 }
 
 function Table({ getTableProps, headerGroups, rows, getTableBodyProps, prepareRow }: TProps) {
+    
+    // calculation
+    const res = rows.reduce((acc, current) => {
+        acc = {
+            ...acc,
+            patAmount: acc.patAmount + current.original.patinets,
+            totalAmount: acc.totalAmount + current.original.total_sum
+        }
+        return acc
+    }, { patAmount: 0, totalAmount: 0 })
+
     return (
         <table  {...getTableProps} className="w-full text-sm print:text-[10px] print:mt-0 whitespace-nowrap">
             <thead>
@@ -131,6 +143,11 @@ function Table({ getTableProps, headerGroups, rows, getTableBodyProps, prepareRo
                         </tr>
                     )
                 })}
+                <tr className='h-12 border'>
+                    <td className='font-bold py-2 px-4'>Jami:</td>
+                    <td className='font-bold py-2 px-4'>{toLocale(res.patAmount)}</td>
+                    <td className='font-bold py-2 px-4'>{toLocale(res.totalAmount)}</td>
+                </tr>
             </tbody>
 
         </table>
