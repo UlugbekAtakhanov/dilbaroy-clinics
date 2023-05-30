@@ -4,6 +4,7 @@ import { FormValuesProps } from "../pages/reception/Reception"
 import { format } from "date-fns"
 import { PatientProps } from "../types/patientTypes"
 import { PatientUpdateProps } from "../pages/patient-profile/PatientProfile"
+import { NavigateFunction } from "react-router-dom"
 
 const patientsUrl = "/api/register/"
 const getPatientsByUrl = "/api/patient_statistics/"
@@ -43,16 +44,18 @@ export const usePatientsGetData = ({ searchTerm }: UsePatientsGetDataProps) => {
 
 
 interface UsePatientsCreateDataProps {
-    toast: any
+    toast: any,
+    navigate: NavigateFunction
 }
 // create a patient
-export const usePatientsCreateData = ({ toast }: UsePatientsCreateDataProps) => {
+export const usePatientsCreateData = ({ toast, navigate }: UsePatientsCreateDataProps) => {
 
     return useMutation<any, Error, FormValuesProps>((data) => fetchData.post(patientsUrl, data), {
         // onSuccess
         onSuccess: (data) => {
             console.log(data)
             toast.success("Маълумотлар мувафақиятли киритилди")
+            navigate(`/patients/${data.data.id}/${data.data.slug_name}`)
         },
 
         // onError

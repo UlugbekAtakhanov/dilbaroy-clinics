@@ -21,7 +21,7 @@ const Select = ({ label, name, options, ...rest }: OptionsProps & LabelNameProps
             <Field as="select" name={name} {...rest}>
                 {options.map((option, index) => {
                     return (
-                        <option key={index} value={option.value} className={`text-black ${option?.room_patients ? "bg-green-500/50" : ""}`}>{parse(option.key)}</option>
+                        <option disabled={option.room_patients === 0} key={index} value={option.value} className={`text-black ${option?.room_patients ? "bg-green-500/50" : "pointer-events-none"}`}>{parse(option.key)}</option>
                     )
                 })}
             </Field>

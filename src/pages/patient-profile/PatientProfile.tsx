@@ -11,7 +11,6 @@ import { usePatientStop, usePatientUpdate, useSinglePatientGetData } from "../..
 import { useFoodGetData } from "../../hooks/useServicesData"
 import { usePatientStore } from "../../zustand/PatientStore"
 
-
 export interface PatientUpdateProps {
     food_amount: number
     food_duration: number
@@ -37,12 +36,8 @@ const PatientProfile = () => {
     const { mutate: mutatePatientStop } = usePatientStop({ toast, patientId: params?.patientId })
 
 
+    if (isLoading || foodIsLoading || !patient) return <Spinner />
 
-    if (isLoading || foodIsLoading) return <Spinner />
-
-    // if (!patient) {
-    //     throw new Error("There is no patient data")
-    // }
 
     const extraRoomAmount = patient?.duration * patient?.room?.room_price - patient?.room_amount
     const extraFoodAmount = patient?.food_duration * foodData?.data[0].food_price - patient?.food_amount
@@ -82,6 +77,7 @@ const PatientProfile = () => {
         mutatePatientStop()
     }
 
+
     return (
         <div className="p-4 pb-60 ">
             <h1 className='text-2xl w-max mx-auto font-semibold mb-12'>Беморнинг маълумотлари</h1>
@@ -90,10 +86,9 @@ const PatientProfile = () => {
 
             <RoomTable patient={patient} edit={edit} extraRoomAmount={extraRoomAmount} />
 
-            <div className="grid grid-cols-2 gap-4 mb-8">
-                <FoodTable patient={patient} edit={edit} extraFoodAmount={extraFoodAmount} />
-                <ServicesTable patient={patient} />
-            </div>
+            <FoodTable patient={patient} edit={edit} extraFoodAmount={extraFoodAmount} />
+
+            {patient.service.length ? <ServicesTable patient={patient} /> : null}
 
             <div className="flex justify-between">
                 <button onClick={stopHandler} className="button-red bg-cblue flex gap-1 items-center">

@@ -9,6 +9,7 @@ import FormControl from '../../utils/form-utils/FormControl'
 import { toLocale } from "../../utils/toLocale"
 import { usePatientsCreateData } from '../../hooks/usePatientsData'
 import toast from "react-hot-toast"
+import { useNavigate } from 'react-router-dom'
 
 // form type
 export interface FormValuesProps {
@@ -79,7 +80,7 @@ const validate = (values: FormValuesProps) => {
 		errors.birthday = "Маълумотни тўлдиринг"
 	}
 
-	if (!values.doctor) {
+	if (!values.doctor || values.doctor === "no") {
 		errors.doctor = "Маълумотни тўлдиринг"
 	}
 
@@ -96,9 +97,9 @@ const validate = (values: FormValuesProps) => {
 
 
 const Reception = () => {
-
+	const navigate = useNavigate()
 	// useQuery hooks
-	const { mutate } = usePatientsCreateData({ toast })
+	const { mutate } = usePatientsCreateData({ toast, navigate })
 	const { isLoading: servicesIsLoading, data: servicesQuery } = useServicesGetData()
 	const { isLoading: foodIsLoading, data: foodQuery } = useFoodGetData()
 	const { isLoading: doctorsIsLoading, data: doctorsQuery } = useDoctorsGetData()
@@ -134,7 +135,7 @@ const Reception = () => {
 		room_amount: 0,
 
 		food: false,
-		food_duration: 1,
+		food_duration: 0,
 		food_amount: 0,
 
 		services: [],
