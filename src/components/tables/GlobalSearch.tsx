@@ -10,32 +10,18 @@ interface GlobalSearchProps {
 }
 
 const GlobalSearch = ({ getPatientsFn, globalFilter, setGlobalFilter }: GlobalSearchProps) => {
-    // const navigate = useNavigate()
-    // const [searchParams] = useSearchParams()
-    // const serviceSearchParamsTerm = searchParams.get("service")
-
-
 
     const [date, setDate] = useState([{ startDate: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30), endDate: new Date(Date.now()), key: 'selection' }])
     const startDate = format(date[0].startDate, "yyyy-MM-dd")
     const endDate = format(date[0].endDate, "yyyy-MM-dd")
 
 
-    // const [rejim, setRejim] = useState("Rejim")
-    // const [service, setService] = useState("Barchasi")
-    // const [doctor, setDoctor] = useState("Barchasi")
-
-
     const searchTerm = { from: startDate, to: endDate }
     const { refetch, isFetching } = getPatientsFn({ searchTerm })
-    // const { refetch, isFetching } = getPatientsFn({ dispatch, , navigate,  serviceSearchParamsTerm })
-    // const { } = useServicesGetData(dispatch)
-    // const { } = useDoctorsGetData(dispatch)
 
 
     const searchHandler = () => {
         refetch()
-        // navigate(`?rejim=${searchTerm.rejim}&from=${searchTerm.from}&to=${searchTerm.to}&service=${searchTerm.service}&doctor=${searchTerm.doctor}`)
     }
 
 

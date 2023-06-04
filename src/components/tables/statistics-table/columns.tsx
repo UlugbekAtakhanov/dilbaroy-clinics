@@ -68,6 +68,32 @@ export const COLUMNS = [
         }
     },
     {
+        Header: "Massaj katta dan тушган пул",
+        accessor: (data: DoctorStatProps) => {
+            const total = data.patients.reduce((acc: number, current: PatientProps) => {
+                return acc += current.massaj1_amount
+            }, 0)
+            return total
+        },
+        Cell: (data: any) => {
+            const value = data.cell.value
+            return <p className="text-center">{toLocale(value)}</p>
+        }
+    },
+    {
+        Header: "Massaj kichik dan тушган пул",
+        accessor: (data: DoctorStatProps) => {
+            const total = data.patients.reduce((acc: number, current: PatientProps) => {
+                return acc += current.massaj2_amount
+            }, 0)
+            return total
+        },
+        Cell: (data: any) => {
+            const value = data.cell.value
+            return <p className="text-center">{toLocale(value)}</p>
+        }
+    },
+    {
         Header: "EKG дан тушган пул",
         accessor: (data: DoctorStatProps) => {
             const total = data.patients.reduce((acc: number, current: PatientProps) => {

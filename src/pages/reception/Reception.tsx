@@ -4,7 +4,7 @@ import { Field, Form, Formik, FormikErrors, FormikHelpers } from 'formik'
 import Spinner from '../../components/spinner/Spinner'
 import { useDoctorsGetData } from '../../hooks/useDoctorsData'
 import { useRoomsGetData } from '../../hooks/useRoomsData'
-import { useFoodGetData, useServicesGetData } from '../../hooks/useServicesData'
+import { useRoomServicesGetData, useServicesGetData } from '../../hooks/useServicesData'
 import FormControl from '../../utils/form-utils/FormControl'
 import { toLocale } from "../../utils/toLocale"
 import { usePatientsCreateData } from '../../hooks/usePatientsData'
@@ -28,6 +28,14 @@ export interface FormValuesProps {
 	food: boolean,
 	food_duration: number,
 	food_amount: number
+
+	massaj1: boolean,
+	massaj1_duration: number,
+	massaj1_amount: number
+
+	massaj2: boolean,
+	massaj2_duration: number,
+	massaj2_amount: number
 
 	services: never[],
 	total_amount: number
@@ -101,7 +109,9 @@ const Reception = () => {
 	// useQuery hooks
 	const { mutate } = usePatientsCreateData({ toast, navigate })
 	const { isLoading: servicesIsLoading, data: servicesQuery } = useServicesGetData()
-	const { isLoading: foodIsLoading, data: foodQuery } = useFoodGetData()
+	const { isLoading: foodIsLoading, data: roomServicesQuery } = useRoomServicesGetData()
+	const roomServices = roomServicesQuery?.data ?? []
+	// const { isLoading: foodIsLoading, data: foodQuery } = useFoodGetData()
 	const { isLoading: doctorsIsLoading, data: doctorsQuery } = useDoctorsGetData()
 	const { isLoading: roomsIsLoading, data: roomsQuery } = useRoomsGetData()
 
@@ -138,6 +148,14 @@ const Reception = () => {
 		food_duration: 0,
 		food_amount: 0,
 
+		massaj1: false,
+		massaj1_duration: 0,
+		massaj1_amount: 0,
+
+		massaj2: false,
+		massaj2_duration: 0,
+		massaj2_amount: 0,
+
 		services: [],
 		total_amount: 0
 	}
@@ -145,13 +163,15 @@ const Reception = () => {
 	// form onSubmit
 	const onSubmit = (values: FormValuesProps, onSubmitProps: FormikHelpers<FormValuesProps>) => {
 		const roomTotal = roomsList.find((room: RoomProps) => room.id.toString() === values.room_number).room_price * values.duration
-		const foodTotal = values.food ? values.food_duration * 30000 : 0
+		const foodTotal = values.food ? values.food_duration * roomServices[0].price : 0
+		const massaj1Total = values.massaj1 ? values.massaj1_duration * roomServices[1].price : 0
+		const massaj2Total = values.massaj2 ? values.massaj2_duration * roomServices[2].price : 0
 		const servicesTotal = values.services.reduce((acc, current) => {
 			const el = servicesQuery?.data.find((service: ServiceProps) => service.id.toString() === current)
 			return acc += el.service_price
 		}, 0)
-		const totalAmount = roomTotal + foodTotal + servicesTotal
-		values = { ...values, total_amount: totalAmount, food_amount: foodTotal, room_amount: roomTotal }
+		const totalAmount = roomTotal + foodTotal + servicesTotal + massaj1Total + massaj2Total
+		values = { ...values, total_amount: totalAmount, food_amount: foodTotal, room_amount: roomTotal, massaj1_amount: massaj1Total, massaj2_amount: massaj2Total }
 		// console.log(values)
 		mutate(values)
 		setTimeout(() => {
@@ -172,16 +192,19 @@ const Reception = () => {
 				{formik => {
 					const specRoom = roomsList.find((room: RoomProps) => room.id.toString() === formik.values.room_number)
 					const roomTotal = specRoom ? specRoom?.room_price * formik.values.duration : 0
-					const foodTotal = formik.values.food ? formik.values.food_duration * foodQuery?.data[0].food_price : 0
+					const foodTotal = formik.values.food ? formik.values.food_duration * roomServices[0].price : 0
+					const massaj1Total = formik.values.massaj1 ? formik.values.massaj1_duration * roomServices[1].price : 0
+					const massaj2Total = formik.values.massaj2 ? formik.values.massaj2_duration * roomServices[2].price : 0
 					const servicesTotal = formik.values.services.reduce((acc, current) => {
 						const el = servicesQuery?.data.find((service: ServiceProps) => service.id.toString() === current)
 						return acc += el.service_price
 					}, 0)
-					const totalAmount = roomTotal + foodTotal + servicesTotal
+					const totalAmount = roomTotal + foodTotal + servicesTotal + massaj1Total + massaj2Total
 
 					return (
 						<Form className="grid gap-6 md:grid-cols-3">
 
+							{/* patient data */}
 							<div className='flex flex-col gap-4'>
 								<FormControl control="input" label="Бемор Ф.И.О." placeholder="Исм Фамилия" name="full_name" type="text" />
 								<FormControl control="input" label="Паспорт серия ва рақами" placeholder="AB1234567" name="pass_data" type="text" />
@@ -216,19 +239,55 @@ const Reception = () => {
 
 								{/* Taom */}
 								<div className='flex flex-col gap-1'>
-									<span className='font-semibold'>Таом</span>
+									{/* <span className='font-semibold'>Таом</span> */}
 									<div className='border border-gray-300 rounded p-2 grid gap-4'>
 										<label className="flex flex-row gap-2 items-center font-semibold cursor-pointer">
 											<Field type="checkbox" name='food' />
-											Taom ichida
+											{roomServices[0].name}
 										</label>
 										{formik.values.food ? (
 											<>
 												<div>
 													<FormControl control="input" label="Кун сони" min={1} name="food_duration" type="number" />
-													<p className='text-xs'>(кунига  <span className='font-bold'>{toLocale(foodQuery?.data[0].food_price)}</span> минг сўм)</p>
+													<p className='text-xs'>(кунига  <span className='font-bold'>{toLocale(roomServices[0].price)}</span> минг сўм)</p>
 												</div>
-												<p className='underline'>Жами - <span className='font-bold'>{formik.values.food_duration > 0 ? toLocale(formik.values.food_duration * foodQuery?.data[0].food_price) : 0} сўм</span></p>
+												<p className='underline'>Жами - <span className='font-bold'>{formik.values.food_duration > 0 ? toLocale(formik.values.food_duration * roomServices[0].price) : 0} сўм</span></p>
+											</>
+										) : null}
+									</div>
+								</div>
+								{/* Massaj katta */}
+								<div className='flex flex-col gap-1'>
+									<div className='border border-gray-300 rounded p-2 grid gap-4'>
+										<label className="flex flex-row gap-2 items-center font-semibold cursor-pointer">
+											<Field type="checkbox" name='massaj1' />
+											{roomServices[1].name}
+										</label>
+										{formik.values.massaj1 ? (
+											<>
+												<div>
+													<FormControl control="input" label="Кун сони" min={1} name="massaj1_duration" type="number" />
+													<p className='text-xs'>(кунига  <span className='font-bold'>{toLocale(roomServices[1].price)}</span> минг сўм)</p>
+												</div>
+												<p className='underline'>Жами - <span className='font-bold'>{formik.values.massaj1_duration > 0 ? toLocale(formik.values.massaj1_duration * roomServices[1].price) : 0} сўм</span></p>
+											</>
+										) : null}
+									</div>
+								</div>
+								{/* Massaj kichik */}
+								<div className='flex flex-col gap-1'>
+									<div className='border border-gray-300 rounded p-2 grid gap-4'>
+										<label className="flex flex-row gap-2 items-center font-semibold cursor-pointer">
+											<Field type="checkbox" name='massaj2' />
+											{roomServices[2].name}
+										</label>
+										{formik.values.massaj2 ? (
+											<>
+												<div>
+													<FormControl control="input" label="Кун сони" min={1} name="massaj2_duration" type="number" />
+													<p className='text-xs'>(кунига  <span className='font-bold'>{toLocale(roomServices[2].price)}</span> минг сўм)</p>
+												</div>
+												<p className='underline'>Жами - <span className='font-bold'>{formik.values.massaj2_duration > 0 ? toLocale(formik.values.massaj2_duration * roomServices[2].price) : 0} сўм</span></p>
 											</>
 										) : null}
 									</div>

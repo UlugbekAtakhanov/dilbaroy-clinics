@@ -5,16 +5,16 @@ import { usePatientStore } from "../../../zustand/PatientStore"
 import { PrinterIcon } from "@heroicons/react/24/outline"
 import { useReactToPrint } from "react-to-print"
 
-interface FoodTableProps {
+interface Massaj1TableProps {
     patient: PatientProps
     edit: boolean
-    extraFoodAmount: number
+    extraMassaj1Amount: number
 }
 
-const FoodTable = ({ patient, edit, extraFoodAmount }: FoodTableProps) => {
+const Massaj1Table = ({ patient, edit, extraMassaj1Amount }: Massaj1TableProps) => {
     const printTableRef = useRef(null)
-    const { incFoodDuration, decFoodDuration } = usePatientStore(state => state)
-    const { food_duration, food_amount, food_refund, full_name, phone_number } = patient
+    const { incMassaj1Duration, decMassaj1Duration } = usePatientStore(state => state)
+    const { massaj1_duration, massaj1_amount, massaj1_refund, full_name, phone_number } = patient
 
     const printHandler = useReactToPrint({
         content: () => printTableRef.current ? printTableRef?.current : null,
@@ -25,7 +25,7 @@ const FoodTable = ({ patient, edit, extraFoodAmount }: FoodTableProps) => {
         <div className="mb-20">
 
             <h1 className="font-bold text-lg mb-4 text-left flex items-center gap-2">
-                Taomlar buyicha ma'lumot
+                Kattalar uchun massaj
                 <button onClick={printHandler} className='self-end button-green'><PrinterIcon className='w-6 text-white' /></button>
             </h1>
 
@@ -36,7 +36,7 @@ const FoodTable = ({ patient, edit, extraFoodAmount }: FoodTableProps) => {
                 </div>
 
                 <table className="w-full">
-                    <caption className="text-lg font-bold text-left hidden print:table-caption">Taom</caption>
+                    <caption className="text-lg font-bold text-left hidden print:table-caption">Kattalar uchun massaj</caption>
                     <thead>
                         <tr>
                             <th className="p-1 border border-slate-400">Куни </th>
@@ -50,24 +50,24 @@ const FoodTable = ({ patient, edit, extraFoodAmount }: FoodTableProps) => {
                                 <div className="flex items-center justify-center gap-3">
                                     {edit ? (
                                         <>
-                                            <button onClick={decFoodDuration} className="sub-btn">-</button>
-                                            {food_duration}
-                                            <button onClick={incFoodDuration} className="add-btn">+</button>
+                                            <button onClick={decMassaj1Duration} className="sub-btn">-</button>
+                                            {massaj1_duration}
+                                            <button onClick={incMassaj1Duration} className="add-btn">+</button>
                                         </>
-                                    ) : food_duration}
+                                    ) : massaj1_duration}
                                 </div>
                             </td>
 
                             <td className="p-1 border border-slate-400 text-center w-[180px]">
-                                {toLocale(food_amount)}
-                                {extraFoodAmount ? extraFoodAmount > 0 ? (
-                                    <span className="bg-green-300 ml-2 px-2 rounded text-green-700 font-semibold">+{toLocale(extraFoodAmount)}</span>
-                                ) : extraFoodAmount < 0 ? (
-                                    <span className="bg-red-300 ml-2 px-2 rounded text-red-700 font-semibold">{toLocale(extraFoodAmount)}</span>
+                                {toLocale(massaj1_amount)}
+                                {extraMassaj1Amount ? extraMassaj1Amount > 0 ? (
+                                    <span className="bg-green-300 ml-2 px-2 rounded text-green-700 font-semibold">+{toLocale(extraMassaj1Amount)}</span>
+                                ) : extraMassaj1Amount < 0 ? (
+                                    <span className="bg-red-300 ml-2 px-2 rounded text-red-700 font-semibold">{toLocale(extraMassaj1Amount)}</span>
                                 ) : null : null}
                             </td>
 
-                            <td className="p-1 border border-slate-400 text-center">{toLocale(food_refund)}</td>
+                            <td className="p-1 border border-slate-400 text-center">{toLocale(massaj1_refund)}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -77,4 +77,4 @@ const FoodTable = ({ patient, edit, extraFoodAmount }: FoodTableProps) => {
     )
 }
 
-export default FoodTable
+export default Massaj1Table
