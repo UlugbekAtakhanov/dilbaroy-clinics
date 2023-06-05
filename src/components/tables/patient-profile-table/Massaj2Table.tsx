@@ -25,7 +25,7 @@ const Massaj2Table = ({ patient, edit, extraMassaj2Amount }: Massaj2TableProps) 
         <div className="mb-20">
 
             <h1 className="font-bold text-lg mb-4 text-left flex items-center gap-2">
-                Kichiklar uchun massaj
+                Кичиклар учун массаж
                 <button onClick={printHandler} className='self-end button-green'><PrinterIcon className='w-6 text-white' /></button>
             </h1>
 

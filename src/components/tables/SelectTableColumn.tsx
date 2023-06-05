@@ -29,7 +29,7 @@ const SelectTableColumn = ({ allColumns }: any) => {
                             leaveFrom="transform scale-100 opacity-100"
                             leaveTo="transform scale-95 opacity-0"
                         >
-                            <Listbox.Options as="ul" className="absolute z-10 top-0 left-0 w-full overflow-hidden bg-white rounded shadow">
+                            <Listbox.Options as="ul" className="absolute z-10 top-0 left-0 w-max overflow-hidden bg-white rounded shadow">
                                 {allColumns.map((column: any) => {
                                     return (
                                         <Listbox.Option value={column} key={column.id}>

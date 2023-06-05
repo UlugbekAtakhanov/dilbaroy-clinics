@@ -102,7 +102,7 @@ interface TProps {
 }
 
 function Table({ getTableProps, headerGroups, rows, getTableBodyProps, prepareRow }: TProps) {
-    
+
     // calculation
     const res = rows.reduce((acc, current) => {
         acc = {

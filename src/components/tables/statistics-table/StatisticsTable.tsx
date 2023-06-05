@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { Fragment, useMemo, useRef } from 'react'
 import { HeaderGroup, Row, TableBodyPropGetter, TableBodyProps, TablePropGetter, TableProps, useGlobalFilter, useSortBy, useTable } from 'react-table'
 import { COLUMNS } from './columns'
 import { ChevronDownIcon, PrinterIcon } from "@heroicons/react/24/outline"
@@ -106,11 +106,14 @@ interface AccProps {
     totalRefund: number,
     roomAmount: number,
     foodAmount: number,
+    massaj1Amount: number,
+    massaj2Amount: number,
     ekgAmount: number,
     rentgenAmount: number
 }
 
 function Table({ getTableProps, headerGroups, rows, getTableBodyProps, prepareRow }: TProps) {
+
 
     // calculation 1
     const res = rows.reduce((acc: AccProps, current: Row<DoctorStatProps>) => {
@@ -125,10 +128,12 @@ function Table({ getTableProps, headerGroups, rows, getTableBodyProps, prepareRo
                 total_refund: t.total_refund + curr.total_refund,
                 room_amount: t.room_amount + curr.room_amount,
                 food_amount: t.food_amount + curr.food_amount,
+                massaj1_amount: t.massaj1_amount + curr.massaj1_amount,
+                massaj2_amount: t.massaj2_amount + curr.massaj2_amount,
                 ekg_amount: t.ekg_amount + ekg_amount,
                 rentgen_amount: t.rentgen_amount + rentgen_amount
             }
-        }, { total_amount: 0, total_refund: 0, room_amount: 0, food_amount: 0, ekg_amount: 0, rentgen_amount: 0 })
+        }, { total_amount: 0, total_refund: 0, room_amount: 0, food_amount: 0, massaj1_amount: 0, massaj2_amount: 0, ekg_amount: 0, rentgen_amount: 0 })
 
         acc = {
             ...acc,
@@ -137,12 +142,13 @@ function Table({ getTableProps, headerGroups, rows, getTableBodyProps, prepareRo
             totalRefund: acc.totalRefund + r.total_refund,
             roomAmount: acc.roomAmount + r.room_amount,
             foodAmount: acc.foodAmount + r.food_amount,
+            massaj1Amount: acc.massaj1Amount + r.massaj1_amount,
+            massaj2Amount: acc.massaj2Amount + r.massaj2_amount,
             ekgAmount: acc.ekgAmount + r.ekg_amount,
             rentgenAmount: acc.rentgenAmount + r.rentgen_amount,
         }
         return acc
-    }, { patCount: 0, totalAmount: 0, totalRefund: 0, roomAmount: 0, foodAmount: 0, ekgAmount: 0, rentgenAmount: 0 })
-
+    }, { patCount: 0, totalAmount: 0, totalRefund: 0, roomAmount: 0, foodAmount: 0, massaj1Amount: 0, massaj2Amount: 0, ekgAmount: 0, rentgenAmount: 0 })
 
     return (
         <table  {...getTableProps} className="w-full text-sm print:text-[10px] print:mt-0 whitespace-nowrap">
@@ -168,25 +174,37 @@ function Table({ getTableProps, headerGroups, rows, getTableBodyProps, prepareRo
                     prepareRow(row)
                     return (
                         <tr className='[&:nth-child(even)]:bg-gray-100 hover:[&:nth-child(even)]:bg-cblue/20 hover:bg-cblue/20 font-semibold transition-all' {...row.getRowProps()}>
-                            {row.cells.map(cell => (
-                                <td className='py-2 px-4' {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                            ))}
+                            {row.cells.map(cell => {
+                                return (
+                                    <td className='py-2 px-4' {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                                )
+                            }
+                            )}
                         </tr>
                     )
                 })}
 
+
                 <tr className='h-12 border'>
-                    <td className='font-bold py-2 px-4'>Jami:</td>
-                    <td className='text-center font-bold py-2 px-4'>{toLocale(res.patCount)}</td>
-                    <td className='text-center font-bold py-2 px-4'>{toLocale(res.totalAmount)}</td>
-                    <td className='text-center font-bold py-2 px-4'>{toLocale(res.totalRefund)}</td>
-                    <td className='text-center font-bold py-2 px-4'>{toLocale(res.roomAmount)}</td>
-                    <td className='text-center font-bold py-2 px-4'>{toLocale(res.foodAmount)}</td>
-                    <td className='text-center font-bold py-2 px-4'>{toLocale(res.ekgAmount)}</td>
-                    <td className='text-center font-bold py-2 px-4'>{toLocale(res.rentgenAmount)}</td>
+                    {headerGroups[0].headers.map((header, index) => {
+                        return (
+                            <Fragment key={index}>
+                                {header.Header === "Шифокор Ф.И.О." ? <td className='font-bold py-2 px-4'>Jami:</td> : null}
+                                {header.Header === "Палатага ётқизилган беморлар сони" ? <td className='text-center font-bold py-2 px-4'>{toLocale(res.patCount)}</td> : null}
+                                {header.Header === "Умумий сумма" ? <td className='text-center font-bold py-2 px-4'>{toLocale(res.totalAmount)}</td> : null}
+                                {header.Header === "Қайтарилди" ? <td className='text-center font-bold py-2 px-4'>{toLocale(res.totalRefund)}</td> : null}
+                                {header.Header === "Палатадан тушган пул" ? <td className='text-center font-bold py-2 px-4'>{toLocale(res.roomAmount)}</td> : null}
+                                {header.Header === "Таомдан тушган пул" ? <td className='text-center font-bold py-2 px-4'>{toLocale(res.foodAmount)}</td> : null}
+                                {header.Header === "Массаж катта дан тушган пул" ? <td className='text-center font-bold py-2 px-4'>{toLocale(res.massaj1Amount)}</td> : null}
+                                {header.Header === "Массаж кичик дан тушган пул" ? <td className='text-center font-bold py-2 px-4'>{toLocale(res.massaj2Amount)}</td> : null}
+                                {header.Header === "EKG дан тушган пул" ? <td className='text-center font-bold py-2 px-4'>{toLocale(res.ekgAmount)}</td> : null}
+                                {header.Header === "Rentgen дан тушган пул" ? <td className='text-center font-bold py-2 px-4'>{toLocale(res.rentgenAmount)}</td> : null}
+                            </Fragment>
+                        )
+                    })}
                 </tr>
             </tbody>
 
-        </table>
+        </table >
     )
 }

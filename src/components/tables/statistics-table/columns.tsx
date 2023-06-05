@@ -68,7 +68,7 @@ export const COLUMNS = [
         }
     },
     {
-        Header: "Massaj katta dan тушган пул",
+        Header: "Массаж катта дан тушган пул",
         accessor: (data: DoctorStatProps) => {
             const total = data.patients.reduce((acc: number, current: PatientProps) => {
                 return acc += current.massaj1_amount
@@ -81,7 +81,7 @@ export const COLUMNS = [
         }
     },
     {
-        Header: "Massaj kichik dan тушган пул",
+        Header: "Массаж кичик дан тушган пул",
         accessor: (data: DoctorStatProps) => {
             const total = data.patients.reduce((acc: number, current: PatientProps) => {
                 return acc += current.massaj2_amount

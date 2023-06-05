@@ -28,7 +28,7 @@ const ServicesTable = ({ patient }: ServicesTableProps) => {
     return (
         <div className="mb-20">
             <table className="w-full">
-                <caption className="font-bold text-lg mb-4 text-left">Boshqa ma'lumotlar</caption>
+                <caption className="font-bold text-lg mb-4 text-left">Бошқа маълумотлар</caption>
                 <thead>
                     <tr>
                         {service.map((item, index) => (
