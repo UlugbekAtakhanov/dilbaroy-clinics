@@ -243,7 +243,7 @@ const Reception = () => {
 									<div className='border border-gray-300 rounded p-2 grid gap-4'>
 										<label className="flex flex-row gap-2 items-center font-semibold cursor-pointer">
 											<Field type="checkbox" name='food' />
-											{roomServices[0].name}
+											{roomServices[0]?.name}
 										</label>
 										{formik.values.food ? (
 											<>
@@ -261,7 +261,7 @@ const Reception = () => {
 									<div className='border border-gray-300 rounded p-2 grid gap-4'>
 										<label className="flex flex-row gap-2 items-center font-semibold cursor-pointer">
 											<Field type="checkbox" name='massaj1' />
-											{roomServices[1].name}
+											{roomServices[1]?.name}
 										</label>
 										{formik.values.massaj1 ? (
 											<>
@@ -279,7 +279,7 @@ const Reception = () => {
 									<div className='border border-gray-300 rounded p-2 grid gap-4'>
 										<label className="flex flex-row gap-2 items-center font-semibold cursor-pointer">
 											<Field type="checkbox" name='massaj2' />
-											{roomServices[2].name}
+											{roomServices[2]?.name}
 										</label>
 										{formik.values.massaj2 ? (
 											<>

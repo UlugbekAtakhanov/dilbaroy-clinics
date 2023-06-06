@@ -14,14 +14,13 @@ interface OptionsProps {
 
 const Checkbox = ({ label, name, options, ...rest }: OptionsProps & LabelNameProps) => {
 
-    if (!name || !options?.length) throw new Error("label and name attributes are required")
 
     return (
         <label className='capitalize'>
             <span className='font-semibold'>{label}</span>
             <Field name={name} {...rest}>
                 {({ field, form }: FieldProps) => {
-                    return options.map((option, index) => (
+                    return options?.map((option, index) => (
                         <div key={index} className='flex justify-between'>
                             <label className="flex flex-row gap-2 items-center font-semibold cursor-pointer">
                                 <input type="checkbox" {...field} value={option.value} checked={field.value.includes(option.value.toString())} />
@@ -32,7 +31,7 @@ const Checkbox = ({ label, name, options, ...rest }: OptionsProps & LabelNamePro
                     ))
                 }}
             </Field>
-            <ErrorMessage name={name} component="div" className='text-red-500 normal-case' />
+            <ErrorMessage name={name ?? ""} component="div" className='text-red-500 normal-case' />
         </label >
     )
 }
