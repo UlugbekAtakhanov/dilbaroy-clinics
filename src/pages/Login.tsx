@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom'
 import { getFromLS } from '../utils/localStorage'
 import toast from "react-hot-toast"
 
+import logo from "../assets/logo.jpg"
+
 
 // form validation
 const validate = (values: LoginFormValuesProps) => {
@@ -29,7 +31,7 @@ const validate = (values: LoginFormValuesProps) => {
 
 const Login = () => {
 	const navigate = useNavigate()
-	const { mutate } = useTokenGetData({navigate, toast})
+	const { mutate } = useTokenGetData({ navigate, toast })
 
 	useEffect(() => {
 		if (getFromLS("token")) {
@@ -62,9 +64,9 @@ const Login = () => {
 				{formik => {
 					return (
 						<Form className='grid max-w-[350px] w-full bg-white p-6 gap-4 rounded-lg'>
-							<div>
-								{/* <img className='w-[200px] mx-auto' src={logo} alt="logo" /> */}
-								<h1 className='text-center text-2xl font-semibold'>Dilbaroy Klinika</h1>
+							<div className='text-cblue flex gap-2 items-end justify-center'>
+								<img className='w-[50px]' src={logo} alt="logo" />
+								<h1 className='text-lg leading-5 font-semibold'>DILBAROY MALHAM <br /> SHIFO SERVIS</h1>
 							</div>
 							<FormControl control="input" label="Логин" placeholder="Логин киритинг" name="username" type="text" />
 							<FormControl control="input" label="Парол" placeholder="Парол киритинг" name="password" type="text" />

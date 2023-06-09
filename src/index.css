@@ -61,3 +61,11 @@
   max-width: 1200px;
   margin-inline: auto;
 }
+
+@media print and (width < 1900px) { 
+  .logo-bg {
+    background-image: url(./assets/logo.jpg);
+    background-size: 50px;
+    background-repeat: no-repeat;
+  }
+}

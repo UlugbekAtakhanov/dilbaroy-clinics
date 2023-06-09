@@ -7,6 +7,9 @@ import { useRef } from "react"
 import { useReactToPrint } from "react-to-print"
 import { PrinterIcon } from "@heroicons/react/24/outline"
 
+import qr from "../../../assets/qr.png"
+import logo from "../../../assets/logo.jpg"
+
 interface RoomTableProps {
     patient: PatientProps,
     edit: boolean,
@@ -16,7 +19,7 @@ interface RoomTableProps {
 const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
     const printTableRef = useRef(null)
     const { incDuration, decDuration } = usePatientStore(state => state)
-    const { room_amount, room_refund, from_date, room: { room_number, room_price }, duration, full_name, phone_number } = patient
+    const { id, birthday, address, room_amount, room_refund, from_date, room: { room_number, room_price }, duration, full_name, phone_number } = patient
     const fromDate = format(new Date(from_date), "dd/MM/yyyy - HH:mm")
     const toDate = format(new Date(new Date(from_date).getTime() + daysInMiliseconds(duration)), "dd/MM/yyyy - HH:mm")
 
@@ -34,12 +37,20 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
             </h1>
 
 
-            <div ref={printTableRef} className="print:w-[95%] print:mx-auto print:mt-4 print:text-[12px]">
-                <div className="hidden print:block">
-                    <h1 className="font-bold text-lg text-left flex items-center gap-2">{full_name}</h1>
-                    <p className="text-gray-500 font-semibold mb-4">{phone_number}</p>
+            <div ref={printTableRef} className="print:w-[95%] print:mx-auto print:mt-4 print:text-[14px] logo-bg">
+                {/* top */}
+                <div className="hidden print:block text-center">
+                    <h1 className="font-bold text-base ">'DILBAROY MALHAM SHIFO SERVIS' MCHJ SHIFOXONASI</h1>
+                    <p className="font-semibold text-base">ТЎЛОВ ҚОҒОЗИ</p>
+                    <p className="font-semibold mb-4 text-base">№{id}/{new Date().getFullYear()}</p>
                 </div>
-                <table className="w-full mb-20">
+                <div className="hidden print:block">
+                    <h1 className="font-semibold text-left flex items-center gap-2">Бемор Ф.И.О.: {full_name}</h1>
+                    <p className="font-semibold">Телефон рақами: {phone_number}</p>
+                    <p className="font-semibold">Туғилган сана: {format(new Date(birthday), "dd/MM/yyyy")}</p>
+                    <p className="font-semibold mb-4">Яшаш манзили: {address}</p>
+                </div>
+                <table className="w-full mb-20 print:mb-4">
                     <thead>
                         <tr>
                             <th className="p-1 border border-slate-400 w-[280px]">Палата </th>
@@ -88,6 +99,20 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
                         </tr>
                     </tbody>
                 </table>
+                {/* bottom */}
+                <div className="hidden print:flex gap-2 justify-between">
+                    <div className="print:flex gap-2">
+                        <h1 className="font-semibold">Мурожаат учун тел: </h1>
+                        <div>
+                            <div>📞+998692330753</div>
+                            <div>📞+998975640010</div>
+                            <div>📞+998945070222</div>
+                        </div>
+                    </div>
+                    <div className="w-[100px]">
+                        <img src={qr} alt="img" />
+                    </div>
+                </div>
             </div>
 
         </div>
