@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { getFromLS } from "./localStorage"
+import { clearLS, getFromLS } from "./localStorage"
 
 interface PrivateRouteProps {
     children: JSX.Element
@@ -12,6 +12,7 @@ const PrivateRoute = ({ children }: PrivateRouteProps) => {
 
     useEffect(() => {
         if (!token) {
+            clearLS()
             navigate("/login")
         }
     }, [])

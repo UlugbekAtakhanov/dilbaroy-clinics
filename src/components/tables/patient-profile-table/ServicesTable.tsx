@@ -43,7 +43,7 @@ const ServicesTable = ({ patient }: ServicesTableProps) => {
                                     content={() => printTableRef.current[index]}
                                 />
                                 {/* printing part */}
-                                <div ref={el => el ? printTableRef.current[index] = el : null} className="print:w-[95%] print:mx-auto print:mt-4 print:text-[12px] logo-bg">
+                                <div ref={el => el ? printTableRef.current[index] = el : null} className="print:w-[95%] print:mx-auto print:mt-4 print:text-[12px] logo-bg print:border print:border-slate-400 print:p-2">
                                     {/* top */}
                                     <div className="hidden print:block text-center">
                                         <h1 className="font-bold text-base ">'DILBAROY MALHAM SHIFO SERVIS' MCHJ SHIFOXONASI</h1>
@@ -62,8 +62,8 @@ const ServicesTable = ({ patient }: ServicesTableProps) => {
                                     </div>
 
                                     {/* bottom */}
-                                    <div className="hidden print:flex gap-2 justify-between">
-                                        <div className="print:flex gap-2">
+                                    <div className="hidden print:flex gap-20">
+                                        <div className="">
                                             <h1 className="font-semibold">Мурожаат учун тел: </h1>
                                             <div>
                                                 <div>📞+998692330753</div>
@@ -71,7 +71,10 @@ const ServicesTable = ({ patient }: ServicesTableProps) => {
                                                 <div>📞+998945070222</div>
                                             </div>
                                         </div>
-                                        <div className="w-[100px]">
+                                        <div>
+                                            <p className="font-semibold">М.у.</p>
+                                        </div>
+                                        <div className="w-[100px] ml-auto">
                                             <img src={qr} alt="img" />
                                         </div>
                                     </div>

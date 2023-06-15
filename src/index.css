@@ -67,5 +67,6 @@
     background-image: url(./assets/logo.jpg);
     background-size: 50px;
     background-repeat: no-repeat;
+    background-position: 10px 5px;
   }
 }

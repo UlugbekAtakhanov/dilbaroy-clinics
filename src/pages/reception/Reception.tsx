@@ -57,7 +57,7 @@ export interface RoomProps {
 	room_personal: number,
 	room_patients: number,
 	room_price: number,
-	room_type: number
+	room_type: { room_type: string }
 }
 export interface RoomSectionProps {
 	id: number,

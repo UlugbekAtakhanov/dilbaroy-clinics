@@ -8,7 +8,6 @@ import { useReactToPrint } from "react-to-print"
 import { PrinterIcon } from "@heroicons/react/24/outline"
 
 import qr from "../../../assets/qr.png"
-import logo from "../../../assets/logo.jpg"
 
 interface RoomTableProps {
     patient: PatientProps,
@@ -19,7 +18,7 @@ interface RoomTableProps {
 const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
     const printTableRef = useRef(null)
     const { incDuration, decDuration } = usePatientStore(state => state)
-    const { id, birthday, address, room_amount, room_refund, from_date, room: { room_number, room_price }, duration, full_name, phone_number } = patient
+    const { id, birthday, address, room_amount, room_refund, from_date, room: { room_number, room_price, room_type, room_comfortable }, duration, full_name, phone_number } = patient
     const fromDate = format(new Date(from_date), "dd/MM/yyyy - HH:mm")
     const toDate = format(new Date(new Date(from_date).getTime() + daysInMiliseconds(duration)), "dd/MM/yyyy - HH:mm")
 
@@ -37,7 +36,7 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
             </h1>
 
 
-            <div ref={printTableRef} className="print:w-[95%] print:mx-auto print:mt-4 print:text-[14px] logo-bg">
+            <div ref={printTableRef} className="print:w-[95%] print:mx-auto print:mt-4 print:text-[14px] logo-bg print:border print:border-slate-400 print:p-2">
                 {/* top */}
                 <div className="hidden print:block text-center">
                     <h1 className="font-bold text-base ">'DILBAROY MALHAM SHIFO SERVIS' MCHJ SHIFOXONASI</h1>
@@ -64,7 +63,7 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
                     <tbody>
                         <tr>
                             <td className="p-1 border border-slate-400 text-center">
-                                <span className="font-bold">{room_number}</span> хона
+                                <span className="font-bold">{room_type.room_type}({room_comfortable}) - {room_number} хона</span>
                                 <p className='text-xs'>
                                     (кунига  <span className='font-semibold'>
                                         {toLocale(room_price)}
@@ -100,8 +99,8 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
                     </tbody>
                 </table>
                 {/* bottom */}
-                <div className="hidden print:flex gap-2 justify-between">
-                    <div className="print:flex gap-2">
+                <div className="hidden print:flex gap-20">
+                    <div className="">
                         <h1 className="font-semibold">Мурожаат учун тел: </h1>
                         <div>
                             <div>📞+998692330753</div>
@@ -109,7 +108,10 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
                             <div>📞+998945070222</div>
                         </div>
                     </div>
-                    <div className="w-[100px]">
+                    <div>
+                        <p className="font-semibold">М.у.</p>
+                    </div>
+                    <div className="w-[100px] ml-auto">
                         <img src={qr} alt="img" />
                     </div>
                 </div>
