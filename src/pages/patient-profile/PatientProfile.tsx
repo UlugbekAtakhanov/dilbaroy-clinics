@@ -49,6 +49,7 @@ const PatientProfile = () => {
 
     if (isLoading || roomServicesQueryIsLoading || !patient) return <Spinner />
 
+    console.log(patient)
 
     const extraRoomAmount = patient?.duration * patient?.room?.room_price - patient?.room_amount
     const extraFoodAmount = patient?.food_duration * roomServices[0].price - patient?.food_amount
@@ -111,12 +112,13 @@ const PatientProfile = () => {
         mutatePatientStop()
     }
 
+    // http://localhost:5173/patients/5/NinaLeblanc
 
     return (
         <div className="p-4 pb-60 ">
             <h1 className='text-2xl w-max mx-auto font-semibold mb-12'>Беморнинг маълумотлари</h1>
 
-            <MainTable patient={patient} extraMainAmount={extraMainAmount} />
+            <MainTable patient={patient} edit={edit} extraMainAmount={extraMainAmount} />
 
             <RoomTable patient={patient} edit={edit} extraRoomAmount={extraRoomAmount} />
 

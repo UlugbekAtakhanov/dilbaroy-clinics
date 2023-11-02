@@ -1,13 +1,16 @@
 import { toLocale } from "../../../utils/toLocale"
 import { PatientProps } from "../../../types/patientTypes"
+import { useRef } from "react"
 
 interface MainTableProps {
     patient: PatientProps
     extraMainAmount: number
+    edit: boolean
 }
 
-const MainTable = ({ patient, extraMainAmount }: MainTableProps) => {
+const MainTable = ({ patient, extraMainAmount, edit }: MainTableProps) => {
     const { full_name, doctor: { full_name: doctor_full_name }, total_amount, total_refund } = patient
+    const inputRef = useRef<HTMLInputElement>(null)
     return (
         <div className="mb-20">
 
@@ -23,7 +26,9 @@ const MainTable = ({ patient, extraMainAmount }: MainTableProps) => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td className="p-1 border border-slate-400">{full_name}</td>
+                        <td className="p-1 border border-slate-400">
+                            {edit ? <input type="text" ref={inputRef} /> : <span>{full_name}</span>}
+                        </td>
                         <td className="p-1 border border-slate-400">{doctor_full_name}</td>
                         <td className="p-1 border border-slate-400 text-center">
                             {toLocale(total_amount)}
