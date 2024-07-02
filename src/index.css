@@ -3,70 +3,68 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply text-black text-[14px] bg-sky-100
-  }
+    body {
+        @apply text-black text-[14px] bg-sky-100;
+    }
 
-  label {
-    @apply flex flex-col !normal-case
-  }
+    label {
+        @apply flex flex-col !normal-case;
+    }
 
-  input[type],
-  select {
-    @apply rounded text-[14px] border-gray-300 placeholder:opacity-50
-  }
+    input[type],
+    select {
+        @apply rounded text-[14px] border-gray-300 placeholder:opacity-50;
+    }
 
-  h2 {
-    @apply text-3xl font-bold
-  }
-
+    h2 {
+        @apply text-3xl font-bold;
+    }
 }
 
 @layer components {
-  .button-green {
-    @apply bg-[#05D3E4] text-white p-2 rounded-md shadow hover:shadow-lg hover:shadow-[#05D3E4] transition-all disabled:bg-[#05D3E4]/50 disabled:shadow-none
-  }
+    .button-green {
+        @apply bg-[#05D3E4] text-white p-2 rounded-md shadow hover:shadow-lg hover:shadow-[#05D3E4] transition-all disabled:bg-[#05D3E4]/50 disabled:shadow-none;
+    }
 
-  .button-red {
-    @apply bg-red-700 text-white p-2 rounded-md shadow hover:shadow-lg hover:shadow-red-400 transition-all disabled:bg-red-500/50 disabled:shadow-none
-  }
+    .button-red {
+        @apply bg-red-700 text-white p-2 rounded-md shadow hover:shadow-lg hover:shadow-red-400 transition-all disabled:bg-red-500/50 disabled:shadow-none;
+    }
 
-  .add-btn {
-    @apply bg-green-500 w-5 h-5 flex justify-center items-center font-bold text-white rounded leading-[0] hover:ring-[1px] hover:ring-sky-500 active:scale-90 focus:outline-none
-  }
+    .add-btn {
+        @apply bg-green-500 w-5 h-5 flex justify-center items-center font-bold text-white rounded leading-[0] hover:ring-[1px] hover:ring-sky-500 active:scale-90 focus:outline-none;
+    }
 
-  .sub-btn {
-    @apply bg-red-500 w-5 h-5 flex justify-center items-center font-bold text-white rounded leading-[0] hover:ring-[1px] hover:ring-sky-500 active:scale-90 focus:outline-none
-  }
+    .sub-btn {
+        @apply bg-red-500 w-5 h-5 flex justify-center items-center font-bold text-white rounded leading-[0] hover:ring-[1px] hover:ring-sky-500 active:scale-90 focus:outline-none;
+    }
 }
 
 ::-webkit-scrollbar {
-  width: 2px;
+    width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: lightgray;
+    @apply bg-gray-300 hover:bg-gray-400 rounded-full;
 }
 
 ::-webkit-scrollbar-thumbhover {
-  background: indigo;
+    background: indigo;
 }
-
 
 .main-container {
-  max-width: 1200px;
-  margin-inline: auto;
+    max-width: 1200px;
+    margin-inline: auto;
 }
 
-@media print and (width < 1900px) { 
-  .logo-bg {
-    background-image: url(./assets/logo.jpg);
-    background-size: 50px;
-    background-repeat: no-repeat;
-    background-position: 10px 5px;
-  }
+@media print and (width < 1900px) {
+    .logo-bg {
+        background-image: url(./assets/logo.png);
+        background-size: 100px;
+        background-repeat: no-repeat;
+        background-position: right 10px top 5px;
+    }
 }
