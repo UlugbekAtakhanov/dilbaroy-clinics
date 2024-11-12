@@ -1,5 +1,8 @@
+import { useSearchParams } from "react-router-dom";
 import { PatientProps } from "../../../types/patientTypes";
 import { daysInMiliseconds, formatDate } from "../../../utils/daysInMiliseconds";
+import { usePatientStore } from "../../../zustand/PatientStore";
+import PatientModal from "./PatientModal";
 
 export const COLUMNS = [
     {
@@ -43,16 +46,20 @@ export const COLUMNS = [
     {
         Header: "Палаталар",
         accessor: (data: PatientProps) => [data?.room?.room_number],
-        Cell: ({ row: { original } }: any) => {
+        Cell: ({ row: { original } }: { row: { original: PatientProps } }) => {
+            const isFrozen = original.is_frozen;
+            const frozenDays = original.frozen_days;
+
             const from = new Date(original.from_date).getTime();
-            const to = new Date(original.from_date).getTime() + daysInMiliseconds(original.duration);
+            const to = new Date(original.from_date).getTime() + daysInMiliseconds(original.duration + frozenDays);
+
             const room_name = original?.room?.room_number.split(" ")[0];
             const room_type = original?.room?.room_type.room_type;
-            const currentDate = Date.now();
+
+            const currentDate = Date.now() + 1000 * 60 * 60 * 24 * frozenDays;
             const minus = Math.round((currentDate - to) / (1000 * 60 * 60 * 24));
             const plus = Math.round((to - currentDate) / (1000 * 60 * 60 * 24));
 
-            // const room_number = original?.room?.room_number;
             const room_patients = original?.room?.room_patients;
             const room_personal = original?.room?.room_personal;
             const room_comfortable = original?.room?.room_comfortable;
@@ -64,7 +71,7 @@ export const COLUMNS = [
                             <span>
                                 {room_type} {room_name} хона
                             </span>
-                            <div className="bg-sky-200 text-sky-700 py-1 px-2 rounded-[30px] text-xs w-max">Тугатилди</div>
+                            <div className="bg-sky-200 text-sky-700 px-1 rounded-md border border-sky-300 text-xs w-max">Тугатилди</div>
                         </div>
                     ) : (
                         <div>
@@ -74,18 +81,33 @@ export const COLUMNS = [
                                         {room_type} {room_name} хона
                                     </span>
                                     {to < currentDate ? (
-                                        <div className="bg-rose-200 text-rose-700 py-1 px-2 rounded-[30px] text-xs w-max">{minus} кун қарз</div>
+                                        <div className="bg-rose-200 text-rose-700 px-1 rounded-md border border-rose-300 text-xs w-max">
+                                            {minus} кун қарз
+                                        </div>
                                     ) : (
-                                        <div className="bg-green-200 text-green-700 py-1 px-2 rounded-[30px] text-xs w-max">{plus} кун ҳақ</div>
+                                        <div className="bg-green-200 text-green-700 px-1 rounded-md border border-green-300 text-xs w-max">
+                                            {plus} кун ҳақ
+                                        </div>
                                     )}
                                 </div>
                             )}
                         </div>
                     )}
+
+                    {!original?.is_paid && <div className="bg-red-200 text-red-700 px-1 rounded-md border border-red-300 text-xs w-max">Тўланмаган</div>}
+
                     {original?.room && (
-                        <p className="text-xs text-slate-400">
-                            {formatDate(from)} - {formatDate(to)}
-                        </p>
+                        <>
+                            <p className="text-xs text-slate-400">
+                                {formatDate(from)} - {formatDate(to)} (давомийлиги {original.duration} кун)
+                            </p>
+
+                            {/* muzlatilgan status */}
+                            <div className="flex gap-1">
+                                {isFrozen && <div className="bg-sky-200 text-sky-700 px-1 text-xs w-max">Mузлатилган</div>}
+                                {isFrozen || frozenDays > 0 ? <p className="text-xs w-max text-sky-700">{frozenDays} кунга музлатилган</p> : null}
+                            </div>
+                        </>
                     )}
 
                     <div className="text-xs text-slate-400">
@@ -103,12 +125,34 @@ export const COLUMNS = [
         },
     },
     {
-        Header: "",
-        accessor: " ",
-        Cell: ({ row: { original } }: any) => {
+        Header: "Таҳрирлаш",
+        Cell: ({ row: { original } }: { row: { original: PatientProps } }) => {
+            const [searchParams, setSearchParams] = useSearchParams();
+            const { addPatient } = usePatientStore();
+
+            const modalHandler = (e: React.MouseEvent) => {
+                e.stopPropagation();
+                addPatient(original);
+                setSearchParams((prev: URLSearchParams) => {
+                    const newParams = new URLSearchParams(prev);
+                    newParams.set("id", original.id.toString());
+                    return newParams;
+                });
+            };
+
+            const id = searchParams.get("id");
+
             return (
                 <div>
-                    <button className="text-[14px] button-red p-[2px] px-3 h-full block">Музлатиш</button>
+                    <button
+                        className="text-[14px] bg-sky-200 border border-sky-300 hover:bg-sky-300 text-sky-600 rounded p-[2px] px-3 h-full block"
+                        onClick={modalHandler}
+                    >
+                        Музлатиш
+                    </button>
+
+                    {/* modal */}
+                    {id && id === original.id.toString() && <PatientModal id={id} setSearchParams={setSearchParams} />}
                 </div>
             );
         },

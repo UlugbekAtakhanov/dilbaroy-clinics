@@ -6,8 +6,6 @@ import { PatientProps } from "../../../types/patientTypes";
 import { toLocale } from "../../../utils/toLocale";
 import { usePatientStore } from "../../../zustand/PatientStore";
 
-import qr from "../../../assets/qr.png";
-
 interface RoomTableProps {
     patient: PatientProps;
     edit: boolean;
@@ -30,9 +28,6 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
         phone_number,
     } = patient;
     const fromDate = format(new Date(from_date), "dd/MM/yyyy");
-    // const toDate = format(new Date(new Date(from_date).getTime() + daysInMiliseconds(duration - 1)), "dd/MM/yyyy");
-    // const fromDate = format(new Date(from_date), "dd/MM/yyyy - HH:mm");
-    // const toDate = format(new Date(new Date(from_date).getTime() + daysInMiliseconds(duration)), "dd/MM/yyyy - HH:mm");
 
     const printHandler = useReactToPrint({
         content: () => (printTableRef.current ? printTableRef?.current : null),
@@ -78,11 +73,10 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
                     <thead>
                         <tr>
                             <th className="p-1 border border-black w-[280px]">Палата </th>
-                            <th className="p-1 border border-black">Куни </th>
-                            <th className="p-1 border border-black">Вақтдан</th>
                             <th className="p-1 border border-black w-[280px]">Тўланган сумма</th>
-                            <th className="p-1 border border-black">Қайтарилди</th>
-                            {/* <th className="p-1 border border-black">Вақтгача</th> */}
+                            <th className="p-1 border border-black">Бошаланиши</th>
+                            <th className="p-1 border border-black">Даволаниш муддати</th>
+                            <th className="p-1 border border-black print:hidden">Қайтарилди</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,6 +89,21 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
                                     (кунига <span className="font-semibold">{toLocale(room_price)}</span> минг сўм)
                                 </p>
                             </td>
+
+                            {/* amount */}
+                            <td className="p-1 border border-black text-center">
+                                {toLocale(room_amount)}
+                                {extraRoomAmount ? (
+                                    extraRoomAmount > 0 ? (
+                                        <span className="bg-green-300 ml-2 px-2 rounded text-green-700 font-semibold">+{toLocale(extraRoomAmount)}</span>
+                                    ) : extraRoomAmount < 0 ? (
+                                        <span className="bg-red-300 ml-2 px-2 rounded text-red-700 font-semibold">{toLocale(extraRoomAmount)}</span>
+                                    ) : null
+                                ) : null}
+                            </td>
+
+                            {/* from date */}
+                            <td className="p-1 border border-black text-center">{fromDate}</td>
 
                             <td className="p-1 border border-black text-center">
                                 <div className="flex items-center justify-center gap-3">
@@ -114,41 +123,12 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
                                 </div>
                             </td>
 
-                            <td className="p-1 border border-black text-center">{fromDate}</td>
-
-                            <td className="p-1 border border-black text-center">
-                                {toLocale(room_amount)}
-                                {extraRoomAmount ? (
-                                    extraRoomAmount > 0 ? (
-                                        <span className="bg-green-300 ml-2 px-2 rounded text-green-700 font-semibold">+{toLocale(extraRoomAmount)}</span>
-                                    ) : extraRoomAmount < 0 ? (
-                                        <span className="bg-red-300 ml-2 px-2 rounded text-red-700 font-semibold">{toLocale(extraRoomAmount)}</span>
-                                    ) : null
-                                ) : null}
-                            </td>
-
-                            <td className="p-1 border border-black text-center">{toLocale(room_refund)}</td>
-                            {/* <td className="p-1 border border-black text-center">{toDate}</td> */}
+                            <td className="p-1 border border-black text-center print:hidden">{toLocale(room_refund)}</td>
                         </tr>
                     </tbody>
                 </table>
-                {/* bottom */}
-                {/* <div className="hidden print:flex gap-20">
-                    <div className="">
-                        <h1 className="font-semibold">Мурожаат учун тел: </h1>
-                        <div>
-                            <div>📞+998692330753</div>
-                            <div>📞+998975640010</div>
-                            <div>📞+998945070222</div>
-                        </div>
-                    </div>
-                    <div>
-                        <p className="font-semibold">М.у.</p>
-                    </div>
-                    <div className="w-[100px] ml-auto">
-                        <img src={qr} alt="img" />
-                    </div>
-                </div> */}
+
+                <p className="hidden print:block text-right mr-40 font-bold">Kacca: </p>
             </div>
         </div>
     );

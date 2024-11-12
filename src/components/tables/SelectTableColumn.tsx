@@ -1,8 +1,7 @@
-import { Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid'
-import { ColumnInstance } from 'react-table'
-import { PatientProps } from '../../types/patientTypes'
-
+import { Listbox, Transition } from "@headlessui/react";
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/solid";
+import { ColumnInstance } from "react-table";
+import { PatientProps } from "../../types/patientTypes";
 
 const SelectTableColumn = ({ allColumns }: any) => {
     return (
@@ -12,9 +11,12 @@ const SelectTableColumn = ({ allColumns }: any) => {
                     <>
                         <Listbox.Label className="font-semibold">Кераклик устунларни танланг:</Listbox.Label>
                         <Listbox.Button className="flex items-center justify-between w-full px-2 text-left border border-black rounded bg-sky-100 text-slate-500 group">
-                            {allColumns.length ? allColumns
-                                .map((column: ColumnInstance<PatientProps>) => column.isVisible ? column.Header : "")
-                                .filter((item: ColumnInstance<PatientProps>) => item).join(", ") : "No one is choosen"}
+                            {allColumns.length
+                                ? allColumns
+                                      .map((column: ColumnInstance<PatientProps>) => (column.isVisible ? column.Header : ""))
+                                      .filter((item: ColumnInstance<PatientProps>) => item)
+                                      .join(", ")
+                                : "No one is choosen"}
                             <span>
                                 <ChevronUpDownIcon className="w-6 h-6 group-hover:text-yellow-500" />
                             </span>
@@ -34,30 +36,31 @@ const SelectTableColumn = ({ allColumns }: any) => {
                                     return (
                                         <Listbox.Option value={column} key={column.id}>
                                             {({ active, disabled }) => (
-                                                <div className={`
+                                                <div
+                                                    className={`
                                                         ${active ? "bg-amber-100 text-amber-900" : "text-slate-500"} 
                                                         ${column.isVisible ? "font-semibold text-slate-600" : "font-normal"} 
                                                         ${disabled ? "text-gray-300" : "text-slate-500"}
                                                         flex items-center gap-2 pl-4 py-2 px-2 transition-all relative
-                                                    `}>
-                                                    {column.isVisible ? <CheckIcon className='absolute w-4 text-amber-600 left-2 ' /> : null}
-                                                    <label htmlFor={column.id} className='flex-row w-full' >
-                                                        <input className='invisible' id={column.id} type="checkbox" {...column.getToggleHiddenProps()} />
+                                                    `}
+                                                >
+                                                    {column.isVisible ? <CheckIcon className="absolute w-4 text-amber-600 left-2 " /> : null}
+                                                    <label htmlFor={column.id} className="flex-row w-full">
+                                                        <input className="invisible" id={column.id} type="checkbox" {...column.getToggleHiddenProps()} />
                                                         <span>{column.Header}</span>
                                                     </label>
                                                 </div>
                                             )}
                                         </Listbox.Option>
-                                    )
+                                    );
                                 })}
                             </Listbox.Options>
                         </Transition>
                     </>
-                )
-                }
-            </Listbox >
+                )}
+            </Listbox>
         </>
-    )
-}
+    );
+};
 
-export default SelectTableColumn
+export default SelectTableColumn;

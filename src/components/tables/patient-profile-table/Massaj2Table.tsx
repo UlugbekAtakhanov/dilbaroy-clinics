@@ -1,11 +1,10 @@
-import { useRef } from "react";
-import { toLocale } from "../../../utils/toLocale";
-import { PatientProps } from "../../../types/patientTypes";
-import { usePatientStore } from "../../../zustand/PatientStore";
 import { PrinterIcon } from "@heroicons/react/24/outline";
-import { useReactToPrint } from "react-to-print";
-import qr from "../../../assets/qr.png";
 import { format } from "date-fns";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import { PatientProps } from "../../../types/patientTypes";
+import { toLocale } from "../../../utils/toLocale";
+import { usePatientStore } from "../../../zustand/PatientStore";
 
 interface Massaj2TableProps {
     patient: PatientProps;
@@ -56,19 +55,6 @@ const Massaj2Table = ({ patient, edit, extraMassaj2Amount }: Massaj2TableProps) 
                         <h1 className="font-semibold text-left flex items-center gap-2">{doctor.full_name}</h1>
                     </div>
                 </div>
-                {/* <div ref={printTableRef} className="print:w-[95%] print:mx-auto print:mt-4 print:text-[12px] logo-bg print:border print:border-slate-400 print:p-2"> */}
-                {/* top */}
-                {/* <div className="hidden print:block text-center">
-                    <h1 className="font-bold text-base ">'DILBAROY MALHAM SHIFO SERVIS' MCHJ SHIFOXONASI</h1>
-                    <p className="font-semibold text-base">ТЎЛОВ ҚОҒОЗИ</p>
-                    <p className="font-semibold mb-4 text-base">№{id}/{new Date().getFullYear()}</p>
-                </div>
-                <div className="hidden print:block">
-                    <h1 className="font-semibold text-left flex items-center gap-2">Бемор Ф.И.О.: {full_name}</h1>
-                    <p className="font-semibold">Телефон рақами: {phone_number}</p>
-                    <p className="font-semibold">Туғилган сана: {format(new Date(birthday), "dd/MM/yyyy")}</p>
-                    <p className="font-semibold mb-4">Яшаш манзили: {address}</p>
-                </div> */}
 
                 <table className="w-full print:mb-4">
                     <thead>
@@ -117,24 +103,6 @@ const Massaj2Table = ({ patient, edit, extraMassaj2Amount }: Massaj2TableProps) 
                         </tr>
                     </tbody>
                 </table>
-
-                {/* bottom */}
-                {/* <div className="hidden print:flex gap-20">
-                    <div className="">
-                        <h1 className="font-semibold">Мурожаат учун тел: </h1>
-                        <div>
-                            <div>📞+998692330753</div>
-                            <div>📞+998975640010</div>
-                            <div>📞+998945070222</div>
-                        </div>
-                    </div>
-                    <div>
-                        <p className="font-semibold">М.у.</p>
-                    </div>
-                    <div className="w-[100px] ml-auto">
-                        <img src={qr} alt="img" />
-                    </div>
-                </div> */}
             </div>
         </div>
     );

@@ -1,5 +1,5 @@
 import { ArrowDownOnSquareIcon, NoSymbolIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/spinner/Spinner";
@@ -12,6 +12,7 @@ import { useRoomServicesGetData } from "../../hooks/useServicesData";
 import { usePatientStore } from "../../zustand/PatientStore";
 import Massaj1Table from "../../components/tables/patient-profile-table/Massaj1Table";
 import Massaj2Table from "../../components/tables/patient-profile-table/Massaj2Table";
+import { PatientProps } from "../../types/patientTypes";
 
 export interface PatientUpdateProps {
     food_amount: number;
@@ -32,14 +33,21 @@ export interface PatientUpdateProps {
 
     total_amount: number;
     total_refund: number;
+
+    is_frozen?: boolean;
+    frozen_days?: number;
+
+    is_paid: boolean;
 }
 
 const PatientProfile = () => {
     const { data: roomServicesQuery, isLoading: roomServicesQueryIsLoading } = useRoomServicesGetData();
     const roomServices = roomServicesQuery?.data;
-    const { patient, addPatient } = usePatientStore((state) => state);
+    const { patient, addPatient }: { patient: PatientProps; addPatient: (patient: PatientProps) => void } = usePatientStore();
 
     const [edit, setEdit] = useState<boolean>(false);
+
+    const isPaidRef = useRef<HTMLInputElement>(null);
 
     const params = useParams();
     const { isLoading } = useSinglePatientGetData({ patientId: params?.patientId, addPatient });
@@ -75,6 +83,8 @@ const PatientProfile = () => {
 
             total_amount: patient.total_amount,
             total_refund: patient.total_refund,
+
+            is_paid: isPaidRef.current?.checked || false,
         };
 
         data.food_amount += extraFoodAmount;
@@ -100,7 +110,7 @@ const PatientProfile = () => {
             data.massaj2_refund += extraMassaj2Amount;
             data.total_refund += extraMassaj2Amount;
         }
-        // console.log(data)
+        // console.log(data);
         mutatePatientUpdate(data);
     };
 
@@ -108,8 +118,6 @@ const PatientProfile = () => {
     const stopHandler = () => {
         mutatePatientStop();
     };
-
-    // http://localhost:5173/patients/5/NinaLeblanc
 
     return (
         <div className="p-4 pb-60 ">
@@ -126,6 +134,18 @@ const PatientProfile = () => {
             <Massaj2Table patient={patient} edit={edit} extraMassaj2Amount={extraMassaj2Amount} />
 
             {patient.service.length ? <ServicesTable patient={patient} /> : null}
+
+            <label className="flex flex-row gap-2 items-start mb-12">
+                <input disabled={!edit} type="checkbox" defaultChecked={patient?.is_paid} ref={isPaidRef} className="mt-1" />
+                <div>
+                    <p>Тўланган </p>
+                    {patient?.is_paid ? (
+                        <p className="text-xs text-slate-400">Ҳизмат ҳаққи тўланган</p>
+                    ) : (
+                        <p className="text-xs text-slate-400">Ҳизмат ҳаққи тўланмаган</p>
+                    )}
+                </div>
+            </label>
 
             <div className="flex justify-between">
                 <button onClick={stopHandler} className="button-red bg-cblue flex gap-1 items-center">

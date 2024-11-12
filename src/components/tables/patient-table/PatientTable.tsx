@@ -17,10 +17,14 @@ const PatientTable = () => {
     const printTableRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams({
+        startDate: JSON.stringify(Date.now() - 1000 * 60 * 60 * 24 * 30),
+        endDate: JSON.stringify(Date.now()),
+        columns: "Бемор Ф.И.О.,Палаталар,Шифокор,Таҳрирлаш",
+    });
 
     // fetching patients list
-    const { isLoading: patientsIsLoading, isFetching: patientsIsFetching, data: patients } = usePatientsGetData({});
+    const { isLoading: patientsIsLoading, data: patients } = usePatientsGetData({});
     let fetchedData = patients?.data;
 
     const room_status = searchParams.get("room_status");
@@ -48,6 +52,8 @@ const PatientTable = () => {
     const tableInstance = useTable({ columns, data }, useGlobalFilter, useSortBy);
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state, setGlobalFilter, allColumns } = tableInstance;
     const { globalFilter } = state;
+
+ 
 
     // print handler
     const printHandler = useReactToPrint({
@@ -100,18 +106,14 @@ const PatientTable = () => {
 
                         {/* table */}
                         <div className="overflow-x-scroll print:overflow-x-hidden">
-                            {patientsIsFetching ? (
-                                <Spinner />
-                            ) : (
-                                <Table
-                                    getTableProps={getTableProps}
-                                    headerGroups={headerGroups}
-                                    rows={rows}
-                                    getTableBodyProps={getTableBodyProps}
-                                    prepareRow={prepareRow}
-                                    goToProfileHandler={goToProfileHandler}
-                                />
-                            )}
+                            <Table
+                                getTableProps={getTableProps}
+                                headerGroups={headerGroups}
+                                rows={rows}
+                                getTableBodyProps={getTableBodyProps}
+                                prepareRow={prepareRow}
+                                goToProfileHandler={goToProfileHandler}
+                            />
                         </div>
 
                         {/* statistics */}

@@ -9,6 +9,7 @@ import { toLocale } from "../../utils/toLocale";
 import { usePatientsCreateData } from "../../hooks/usePatientsData";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 // form type
 export interface FormValuesProps {
@@ -38,6 +39,8 @@ export interface FormValuesProps {
 
     services: never[];
     total_amount: number;
+
+    is_paid: boolean;
 }
 
 // doctors type
@@ -110,6 +113,8 @@ const Reception = () => {
     const { isLoading: doctorsIsLoading, data: doctorsQuery } = useDoctorsGetData();
     const { isLoading: roomsIsLoading, data: roomsQuery } = useRoomsGetData();
 
+    const [isPaid, setIsPaid] = useState(false);
+
     const roomsList = roomsQuery?.data.map((rooms: RoomSectionProps) => rooms.rooms).flat();
     const roomsStat = roomsList?.reduce((acc: any, current: RoomProps) => {
         const count = acc[current.room_comfortable] + 1 || 1;
@@ -158,6 +163,8 @@ const Reception = () => {
 
         services: [],
         total_amount: 0,
+
+        is_paid: false,
     };
 
     // form onSubmit
@@ -178,12 +185,11 @@ const Reception = () => {
             room_amount: roomTotal,
             massaj1_amount: massaj1Total,
             massaj2_amount: massaj2Total,
+            is_paid: isPaid,
         };
-        // console.log(values)
         mutate(values);
         setTimeout(() => {
             onSubmitProps.setSubmitting(false);
-            // onSubmitProps.resetForm()
         }, 3000);
     };
 
@@ -229,7 +235,8 @@ const Reception = () => {
                                 <div className="flex flex-col gap-1">
                                     <span className="font-semibold">Палата</span>
                                     <div className="border border-gray-300 rounded p-2 grid gap-4">
-                                        <FormControl control="datepicker" label="Сана" name="from_date" type="datetime-local" />
+                                        <FormControl control="datepicker" label="Сана" name="from_date" />
+                                        {/* <FormControl control="datepicker" label="Сана" name="from_date" type="datetime-local" /> */}
 
                                         <div>
                                             <FormControl control="input" label="Кун сони" min={1} name="duration" type="number" />
@@ -338,9 +345,16 @@ const Reception = () => {
                                 </div>
 
                                 {/* Жами */}
-                                <p className="underline">
-                                    Жами - <span className="font-bold">{toLocale(totalAmount)} сўм</span>
-                                </p>
+                                <div className="flex gap-6 items-center">
+                                    <p className="underline">
+                                        Жами - <span className="font-bold">{toLocale(totalAmount)} сўм</span>
+                                    </p>
+                                    <label className="flex flex-row gap-2 items-center">
+                                        <input type="checkbox" checked={isPaid} onChange={() => setIsPaid((prev) => !prev)} />
+                                        <span>Тўланган</span>
+                                    </label>
+                                </div>
+
                                 <button
                                     disabled={!formik.isValid || formik.isSubmitting}
                                     type="submit"

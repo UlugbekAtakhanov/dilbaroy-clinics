@@ -1,11 +1,10 @@
-import { useRef } from "react";
-import { toLocale } from "../../../utils/toLocale";
-import { PatientProps } from "../../../types/patientTypes";
-import { usePatientStore } from "../../../zustand/PatientStore";
 import { PrinterIcon } from "@heroicons/react/24/outline";
-import { useReactToPrint } from "react-to-print";
 import { format } from "date-fns";
-import qr from "../../../assets/qr.png";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import { PatientProps } from "../../../types/patientTypes";
+import { toLocale } from "../../../utils/toLocale";
+import { usePatientStore } from "../../../zustand/PatientStore";
 
 interface Massaj1TableProps {
     patient: PatientProps;

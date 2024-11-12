@@ -1,17 +1,16 @@
 import { format } from "date-fns";
-import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useRoomsGetData } from "../../hooks/useRoomsData";
 import { RoomSectionProps } from "../../pages/reception/Reception";
 import DatePicker from "../date-picker/DatePicker";
 import GlobalFilter from "./GlobalFilter";
-import { useLocation } from "react-router-dom";
 
 interface GlobalSearchProps {
     getPatientsFn: any;
     globalFilter: any;
     setGlobalFilter: any;
-    searchParams: any;
-    setSearchParams: any;
+    searchParams?: any;
+    setSearchParams?: any;
 }
 
 const GlobalSearch = ({ getPatientsFn, globalFilter, setGlobalFilter, searchParams, setSearchParams }: GlobalSearchProps) => {
@@ -19,12 +18,15 @@ const GlobalSearch = ({ getPatientsFn, globalFilter, setGlobalFilter, searchPara
     const isStatistics = location.pathname.includes("statistics");
     const { data: roomsQuery } = useRoomsGetData();
 
+    const sdate = JSON.parse(searchParams.get("startDate"));
+    const edate = JSON.parse(searchParams.get("endDate"));
+    const date = [{ startDate: new Date(sdate), endDate: new Date(edate), key: "selection" }];
+
     const room_status = (searchParams && searchParams.get("room_status")) || "ҳаммаси";
     const room_type = (searchParams && searchParams.get("room_type")) || "ҳаммаси";
 
     const roomOptions = roomsQuery?.data.map((item: RoomSectionProps) => item.room_type) || [];
 
-    const [date, setDate] = useState([{ startDate: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30), endDate: new Date(Date.now()), key: "selection" }]);
     const startDate = format(date[0].startDate, "yyyy-MM-dd");
     const endDate = format(date[0].endDate, "yyyy-MM-dd");
 
@@ -83,7 +85,7 @@ const GlobalSearch = ({ getPatientsFn, globalFilter, setGlobalFilter, searchPara
             )}
 
             <div className="flex-1">
-                <DatePicker date={date} setDate={setDate} />
+                <DatePicker date={date} setSearchParams={setSearchParams} />
             </div>
 
             <div>
