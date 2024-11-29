@@ -50,13 +50,17 @@ export const COLUMNS = [
             const isFrozen = original.is_frozen;
             const frozenDays = original.frozen_days;
 
-            const from = new Date(original.from_date).getTime();
-            const to = new Date(original.from_date).getTime() + daysInMiliseconds(original.duration + frozenDays);
+            // const from = new Date(original.from_date).getTime();
+            // const to = new Date(original.from_date).getTime() + daysInMiliseconds(original.duration + frozenDays - 1);
+            const from = new Date(original.from_date).setHours(0, 0, 0, 0);
+            const to = new Date(original.from_date).setHours(0, 0, 0, 0) + daysInMiliseconds(original.duration + frozenDays - 1);
 
             const room_name = original?.room?.room_number.split(" ")[0];
             const room_type = original?.room?.room_type.room_type;
 
-            const currentDate = Date.now() + 1000 * 60 * 60 * 24 * frozenDays;
+            // const currentDate = Date.now() + 1000 * 60 * 60 * 24 * (frozenDays - 1);
+            const currentDate = new Date().setHours(0, 0, 0, 0) + 1000 * 60 * 60 * 24 * frozenDays;
+
             const minus = Math.round((currentDate - to) / (1000 * 60 * 60 * 24));
             const plus = Math.round((to - currentDate) / (1000 * 60 * 60 * 24));
 
@@ -80,7 +84,7 @@ export const COLUMNS = [
                                     <span>
                                         {room_type} {room_name} хона
                                     </span>
-                                    {to < currentDate ? (
+                                    {to < currentDate && minus !== 0 ? (
                                         <div className="bg-rose-200 text-rose-700 px-1 rounded-md border border-rose-300 text-xs w-max">
                                             {minus} кун қарз
                                         </div>

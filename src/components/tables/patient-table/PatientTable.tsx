@@ -20,7 +20,6 @@ const PatientTable = () => {
     const [searchParams, setSearchParams] = useSearchParams({
         startDate: JSON.stringify(Date.now() - 1000 * 60 * 60 * 24 * 30),
         endDate: JSON.stringify(Date.now()),
-        columns: "Бемор Ф.И.О.,Палаталар,Шифокор,Таҳрирлаш",
     });
 
     // fetching patients list
@@ -52,8 +51,6 @@ const PatientTable = () => {
     const tableInstance = useTable({ columns, data }, useGlobalFilter, useSortBy);
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state, setGlobalFilter, allColumns } = tableInstance;
     const { globalFilter } = state;
-
- 
 
     // print handler
     const printHandler = useReactToPrint({
