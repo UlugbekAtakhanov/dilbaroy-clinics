@@ -5,6 +5,7 @@ import { useReactToPrint } from "react-to-print";
 import { PatientProps } from "../../../types/patientTypes";
 import { toLocale } from "../../../utils/toLocale";
 import { usePatientStore } from "../../../zustand/PatientStore";
+import logo from "../../../assets/logo.png";
 
 interface RoomTableProps {
     patient: PatientProps;
@@ -14,6 +15,7 @@ interface RoomTableProps {
 
 const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
     const printTableRef = useRef(null);
+    const printTableRef2 = useRef(null);
     const { incDuration, decDuration } = usePatientStore((state) => state);
     const {
         birthday,
@@ -34,11 +36,19 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
         documentTitle: "table",
     });
 
+    const printHandler2 = useReactToPrint({
+        content: () => (printTableRef2.current ? printTableRef2?.current : null),
+        documentTitle: "table",
+    });
+
     return (
         <div>
             <h1 className="font-bold text-lg mb-4 text-left flex items-center gap-2">
                 Палаталар буйича маълумот
-                <button onClick={printHandler} className="self-end button-green">
+                <button onClick={printHandler} className="self-end button-green hidden">
+                    <PrinterIcon className="w-6 text-white" />
+                </button>
+                <button onClick={printHandler2} className="self-end button-green">
                     <PrinterIcon className="w-6 text-white" />
                 </button>
             </h1>
@@ -217,6 +227,77 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
                     </table>
 
                     <p className="hidden print:block text-right mr-40 font-bold">Kacca: </p>
+                </div>
+            </div>
+
+            {/* for small printer */}
+            <div ref={printTableRef2}>
+                <div className="border hidden print:block print:w-[93%] print:mx-auto print:text-xs print:px-2">
+                    {/* top */}
+                    <div className="hidden print:flex justify-center mb-2">
+                        <img src={logo} alt="img" className="w-[100px] h-[72px] object-cover" />
+                    </div>
+
+                    <div className="hidden print:block text-center">
+                        <h1 className="font-bold text-base print:text-xs">Бемор ҳақида маълумот:</h1>
+                        <h1 className="font-semibold">{full_name}</h1>
+                        <p className="font-semibold">{phone_number}</p>
+                        <p className="font-semibold">{format(new Date(birthday), "dd/MM/yyyy")}</p>
+                        <p className="font-semibold mb-4">{address}</p>
+                    </div>
+
+                    <div className="hidden print:block text-center">
+                        <h1 className="font-bold text-base print:text-xs">Доктор ҳақида маълумот:</h1>
+                        <h1 className="">{doctor.full_name}</h1>
+                    </div>
+
+                    <div className="print:space-y-2 mt-4">
+                        <h1 className="font-bold text-base print:text-xs text-center my-2">Ётоқ</h1>
+
+                        {/* palata */}
+                        <p className="flex justify-between">
+                            <span className="font-bold">
+                                {room_type.room_type}({room_comfortable}) - {room_number} хона
+                            </span>
+                            <span>{toLocale(room_price)} минг сўм</span>
+                        </p>
+
+                        {/* tolangan summa */}
+                        <p className="flex justify-between">
+                            <span className="font-bold">Тўланган сумма</span>
+                            <span>{toLocale(room_amount)} минг сўм</span>
+                        </p>
+
+                        {/* boshlanishi */}
+                        <p className="flex justify-between">
+                            <span className="font-bold">Бошаланиши</span>
+                            <span>{fromDate}</span>
+                        </p>
+
+                        {/* davolash muddati */}
+                        <p className="flex justify-between">
+                            <span className="font-bold">Даволаниш муддати</span>
+                            <span>{duration} кун</span>
+                        </p>
+                    </div>
+
+                    <div className="print:space-y-2 mt-4">
+                        <h1 className="font-bold text-base print:text-xs text-center my-2">Тўлов</h1>
+
+                        {/* tolangan summa */}
+                        <p className="flex justify-between">
+                            <span className="font-bold">Умумий сумма</span>
+                            <span>{toLocale(room_amount)} минг сўм</span>
+                        </p>
+
+                        {/* davolash muddati */}
+                        <p className="flex justify-between">
+                            <span className="font-bold">Сана</span>
+                            <span>{format(new Date(), "dd/MM/yyyy HH:mm")}</span>
+                        </p>
+                    </div>
+
+                    <p className="hidden print:block font-bold mt-8 pb-12">Kacca: </p>
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ import { useReactToPrint } from "react-to-print";
 import { PatientProps } from "../../../types/patientTypes";
 import { toLocale } from "../../../utils/toLocale";
 import { usePatientStore } from "../../../zustand/PatientStore";
+import logo from "../../../assets/logo.png";
 
 interface FoodTableProps {
     patient: PatientProps;
@@ -14,6 +15,8 @@ interface FoodTableProps {
 
 const FoodTable = ({ patient, edit, extraFoodAmount }: FoodTableProps) => {
     const printTableRef = useRef(null);
+    const printTableRef2 = useRef(null);
+
     const { incFoodDuration, decFoodDuration } = usePatientStore((state) => state);
     const { birthday, address, food_duration, food_amount, food_refund, doctor, full_name, phone_number } = patient;
 
@@ -22,11 +25,19 @@ const FoodTable = ({ patient, edit, extraFoodAmount }: FoodTableProps) => {
         documentTitle: "table",
     });
 
+    const printHandler2 = useReactToPrint({
+        content: () => (printTableRef2.current ? printTableRef2?.current : null),
+        documentTitle: "table",
+    });
+
     return (
         <div className="mb-20">
             <h1 className="font-bold text-lg mb-4 text-left flex items-center gap-2">
                 Таомлар буйича маълумот
-                <button onClick={printHandler} className="self-end button-green">
+                <button onClick={printHandler} className="self-end button-green hidden">
+                    <PrinterIcon className="w-6 text-white" />
+                </button>
+                <button onClick={printHandler2} className="self-end button-green">
                     <PrinterIcon className="w-6 text-white" />
                 </button>
             </h1>
@@ -177,6 +188,63 @@ const FoodTable = ({ patient, edit, extraFoodAmount }: FoodTableProps) => {
                     </table>
 
                     <p className="hidden print:block text-right mr-40 font-bold">Kacca: </p>
+                </div>
+            </div>
+
+            {/* for small printer */}
+            <div ref={printTableRef2}>
+                <div className="hidden print:block print:w-[93%] border print:mx-auto print:text-xs print:px-2">
+                    {/* top */}
+                    <div className="hidden print:flex justify-center mb-2">
+                        <img src={logo} alt="img" className="w-[100px] h-[72px] object-cover" />
+                    </div>
+
+                    <div className="hidden print:block text-center">
+                        <h1 className="font-bold text-base print:text-xs">Бемор ҳақида маълумот:</h1>
+                        <h1 className="font-semibold">{full_name}</h1>
+                        <p className="font-semibold">{phone_number}</p>
+                        <p className="font-semibold">{format(new Date(birthday), "dd/MM/yyyy")}</p>
+                        <p className="font-semibold mb-4">{address}</p>
+                    </div>
+
+                    <div className="hidden print:block text-center">
+                        <h1 className="font-bold text-base print:text-xs">Доктор ҳақида маълумот:</h1>
+                        <h1 className="">{doctor.full_name}</h1>
+                    </div>
+
+                    <div className="print:space-y-2 mt-4">
+                        <h1 className="font-bold text-base print:text-xs text-center my-2">Таом</h1>
+
+                        {/* kuni */}
+                        <p className="flex justify-between">
+                            <span className="font-bold">Куни</span>
+                            <span>{food_duration} кун</span>
+                        </p>
+
+                        {/* tolangan summa */}
+                        <p className="flex justify-between">
+                            <span className="font-bold">Тўланган сумма</span>
+                            <span>{toLocale(food_amount)} минг сўм</span>
+                        </p>
+                    </div>
+
+                    <div className="print:space-y-2 mt-4">
+                        <h1 className="font-bold text-base print:text-xs text-center my-2">Тўлов</h1>
+
+                        {/* tolangan summa */}
+                        <p className="flex justify-between">
+                            <span className="font-bold">Умумий сумма</span>
+                            <span>{toLocale(food_amount)} минг сўм</span>
+                        </p>
+
+                        {/* davolash muddati */}
+                        <p className="flex justify-between">
+                            <span className="font-bold">Сана</span>
+                            <span>{format(new Date(), "dd/MM/yyyy HH:mm")}</span>
+                        </p>
+                    </div>
+
+                    <p className="hidden print:block font-bold mt-8 pb-12">Kacca: </p>
                 </div>
             </div>
         </div>
