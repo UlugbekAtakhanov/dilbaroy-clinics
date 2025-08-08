@@ -224,7 +224,23 @@ const FoodTable = ({ patient, edit, extraFoodAmount }: FoodTableProps) => {
                         {/* tolangan summa */}
                         <p className="flex justify-between">
                             <span className="font-bold">Тўланган сумма</span>
-                            <span>{toLocale(food_amount)} минг сўм</span>
+                            {/* <span>{toLocale(food_amount)} минг сўм</span> */}
+                            <div>
+                                {/* <span>{toLocale(room_amount)} минг сўм</span> */}
+                                {extraFoodAmount ? (
+                                    extraFoodAmount > 0 ? (
+                                        <span className="bg-green-300 ml-2 px-2 rounded text-green-700 font-semibold">
+                                            +{toLocale(extraFoodAmount)} минг сўм
+                                        </span>
+                                    ) : extraFoodAmount < 0 ? (
+                                        <span className="bg-red-300 ml-2 px-2 rounded text-red-700 font-semibold">
+                                            {toLocale(extraFoodAmount)} минг сўм
+                                        </span>
+                                    ) : null
+                                ) : (
+                                    0
+                                )}
+                            </div>
                         </p>
                     </div>
 

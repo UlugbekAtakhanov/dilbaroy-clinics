@@ -224,7 +224,20 @@ const Massaj2Table = ({ patient, edit, extraMassaj2Amount }: Massaj2TableProps) 
                         {/* tolangan summa */}
                         <p className="flex justify-between">
                             <span className="font-bold">Тўланган сумма</span>
-                            <span>{toLocale(massaj2_amount)} минг сўм</span>
+                            {/* <span>{toLocale(massaj2_amount)} минг сўм</span> */}
+                            {extraMassaj2Amount ? (
+                                extraMassaj2Amount > 0 ? (
+                                    <span className="bg-green-300 ml-2 px-2 rounded text-green-700 font-semibold">
+                                        +{toLocale(extraMassaj2Amount)} минг сўм
+                                    </span>
+                                ) : extraMassaj2Amount < 0 ? (
+                                    <span className="bg-red-300 ml-2 px-2 rounded text-red-700 font-semibold">
+                                        {toLocale(extraMassaj2Amount)} минг сўм
+                                    </span>
+                                ) : null
+                            ) : (
+                                0
+                            )}
                         </p>
                     </div>
 

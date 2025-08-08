@@ -265,12 +265,27 @@ const RoomTable = ({ patient, edit, extraRoomAmount }: RoomTableProps) => {
                         {/* tolangan summa */}
                         <p className="flex justify-between">
                             <span className="font-bold">Тўланган сумма</span>
-                            <span>{toLocale(room_amount)} минг сўм</span>
+                            <div>
+                                {/* <span>{toLocale(room_amount)} минг сўм</span> */}
+                                {extraRoomAmount ? (
+                                    extraRoomAmount > 0 ? (
+                                        <span className="bg-green-300 ml-2 px-2 rounded text-green-700 font-semibold">
+                                            +{toLocale(extraRoomAmount)} минг сўм
+                                        </span>
+                                    ) : extraRoomAmount < 0 ? (
+                                        <span className="bg-red-300 ml-2 px-2 rounded text-red-700 font-semibold">
+                                            {toLocale(extraRoomAmount)} минг сўм
+                                        </span>
+                                    ) : null
+                                ) : (
+                                    0
+                                )}
+                            </div>
                         </p>
 
                         {/* boshlanishi */}
                         <p className="flex justify-between">
-                            <span className="font-bold">Бошаланиши</span>
+                            <span className="font-bold">Бошланиши</span>
                             <span>{fromDate}</span>
                         </p>
 
